@@ -1,85 +1,89 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div class="home">
+    <!-- <head-title @changeLayerType="changeLayerType" /> -->
+    <!-- <div class="baselayer-control"></div> -->
+    <vc-config-provider>
+      <vc-viewer :show-credit="false" fullscreen-button @ready="onViewerReady">
+        <vc-ajax-bar color="red" size="4px" positioning="fixed"></vc-ajax-bar>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+        <vc-navigation
+          :otherOpts="{
+            position: 'bottom',
+            statusBarOpts: { background: 'rgba(0,0,0,.6)' },
+            distancelegendOpts: { background: 'rgba(0,0,0,.6)' },
+          }"
+        />
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+        <layer :ready="ready" :layerType="layerType" />
 
-  <RouterView />
+        <!-- <vc-provider-terrain-tianditu :token="token" /> -->
+
+        <vc-measurements
+          ref="measurementsRef"
+          position="top-right"
+          :measurements="['polyline', 'area', 'vertical']"
+          :mainFabOpts="{ color: 'rgba(0,0,0,.6)' }"
+          :offset="[360, 40]"
+        />
+
+        <!-- <terrain-clip /> -->
+
+        <!-- <vc-drawings></vc-drawings> -->
+      </vc-viewer>
+    </vc-config-provider>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<script setup lang="ts">
+import type { VcReadyObject } from 'vue-cesium/es/utils/types'
+const ready = ref(false)
+const layerType = ref('travel')
+
+function onViewerReady(readyObj: VcReadyObject) {
+  console.log(readyObj.Cesium)
+  console.log(readyObj.viewer)
+  const { Cesium, viewer, map } = readyObj
+  window.Cesium = Cesium
+  window.viewer = viewer
+  window.$map = map
+  ready.value = true
+  viewer.selectedEntity = undefined
+
+  viewer.camera.setView({
+    destination: Cesium.Cartesian3.fromDegrees(106.69, 26.336, 5000),
+  })
+  //   // viewer.scene.globe.depthTestAgainstTerrain = true;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+// function viewerReady(e) {
+//   const { Cesium, viewer, map } = e
+//   window.Cesium = Cesium
+//   window.viewer = viewer
+//   window.$map = map
+//   ready.value = true
+//   viewer.selectedEntity = undefined
+
+//   viewer.camera.setView({
+//     destination: Cesium.Cartesian3.fromDegrees(106.69, 26.336, 5000),
+//   })
+//   // viewer.scene.globe.depthTestAgainstTerrain = true;
+// }
+
+function changeLayerType(type: string) {
+  layerType.value = type
 }
+</script>
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+<style lang="scss" scoped>
+.home {
+  height: 100vh;
+  :deep(.vc-location-other-controls) {
+    button {
+      font-size: 0.8rem;
+      .vc-section {
+        width: 160px;
+      }
+    }
   }
 }
 </style>
