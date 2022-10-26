@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
-import HelloWorld from './components/HelloWorld.vue';
-const xx = ref('ss');
+import { RouterLink, RouterView } from 'vue-router'
+import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
@@ -16,8 +15,8 @@ const xx = ref('ss');
         <RouterLink to="/about">About</RouterLink>
       </nav>
     </div>
-    <el-tag size="mini" type="">{{ xx }}</el-tag>
   </header>
+
   <RouterView />
 </template>
 

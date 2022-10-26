@@ -1,8 +1,15 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["src/**/*", "src/**/*.vue", "./*.d.ts"],
+  "include": [
+    "src/**/*",
+    "src/**/*.vue",
+    "./*.d.ts",
+    "node_modules/vue-cesium/Cesium.d.ts",
+    "node_modules/vue-cesium/global.d.ts"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
+    "types": ["vue-cesium/global", "vue-cesium/Cesium"],
     "paths": {
       "@/*": ["./src/*"]
     }
