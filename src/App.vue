@@ -14,7 +14,12 @@
           }"
         />
 
-        <layer :ready="ready" :layerType="layerType" />
+        <vc-layer-imagery>
+          <!-- <vc-imagery-provider-baidu ref="provider" mapStyle="dark" :projection-transforms="{ from: 'BD09', to: 'WGS84' }" /> -->
+          <vc-imagery-provider-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0" ref="provider" />
+        </vc-layer-imagery>
+
+        <!-- <layer :ready="ready" :layerType="layerType" /> -->
 
         <!-- <vc-provider-terrain-tianditu :token="token" /> -->
 
