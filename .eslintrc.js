@@ -13,4 +13,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
+  globals: {
+    Cesium: true,
+    require: true
+  }
 };

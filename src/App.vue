@@ -19,6 +19,10 @@
           <vc-imagery-provider-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0" ref="provider" />
         </vc-layer-imagery>
 
+        <!-- <vc-terrain-provider-tianditu ref="provider" token="436ce7e50d27eede2f2929307e6b33c0"></vc-terrain-provider-tianditu> -->
+
+        <over-view />
+
         <!-- <layer :ready="ready" :layerType="layerType" /> -->
 
         <!-- <vc-provider-terrain-tianditu :token="token" /> -->
@@ -45,14 +49,12 @@ const ready = ref(false)
 const layerType = ref('travel')
 
 function onViewerReady(readyObj: VcReadyObject) {
-  console.log(readyObj.Cesium)
-  console.log(readyObj.viewer)
   const { Cesium, viewer, map } = readyObj
-  window.Cesium = Cesium
-  window.viewer = viewer
-  window.$map = map
-  ready.value = true
-  viewer.selectedEntity = undefined
+  // window.Cesium = Cesium
+  // window.viewer = viewer
+  // window.$map = map
+  // ready.value = true
+  // viewer.selectedEntity = undefined
 
   viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(106.69, 26.336, 5000),
