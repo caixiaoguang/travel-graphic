@@ -6,6 +6,8 @@ import router from './router'
 
 import VueCesium from 'vue-cesium'
 import 'vue-cesium/dist/index.css'
+import 'element-plus/theme-chalk/index.css'
+import './styles/main.scss'
 
 const app = createApp(App)
 

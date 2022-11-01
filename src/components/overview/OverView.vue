@@ -25,16 +25,18 @@ import type { VcViewerProvider, VcReadyObject } from 'vue-cesium/es/utils/types'
 
 const $vc: VcViewerProvider = useVueCesium()
 
-const props = withDefaults(defineProps<{ active: boolean }>(), { active: false })
-
 // const baseUrl = process.env.BASE_URL
 const overviewDataUrl = `/static/旅游数据/4A5A景区.xlsx`
 const columns = ['旅游资源类型', '个数']
-let overviewData, collection
+let overviewData: any[], collection, handler, graphicLayer
 
 const anaData = ref([])
 
-onMounted(getOverView)
+onMounted(async () => {
+  await $vc.creatingPromise
+  getOverView()
+  bindClickEvent()
+})
 
 async function getOverView() {
   const data = await loadRemoteFile(overviewDataUrl)
@@ -44,9 +46,7 @@ async function getOverView() {
 }
 
 function addEntityPoint(data: Array<Record<string, any>>) {
-  // $vc.viewer.scene.postProcessStages.fxaa.enabled = false
-  console.log($vc.Cesium)
-
+  $vc.viewer.scene.postProcessStages.fxaa.enabled = false
   collection = new $vc.Cesium.CustomDataSource()
 
   for (let i = 0; i < data.length; i++) {
@@ -66,7 +66,7 @@ function addEntityPoint(data: Array<Record<string, any>>) {
             }
           : undefined,
       billboard: {
-        image: item['A级'] === '4A' ? require('../../assets/img/4a.png') : require('../../assets/img/5a.png'),
+        image: item['A级'] === '4A' ? '/img/4a.png' : '/img/5a.png',
         distanceDisplayCondition: item['A级'] === '4A' ? new $vc.Cesium.DistanceDisplayCondition(0, 500000.0) : undefined,
         height: 32,
         width: 32,
@@ -88,13 +88,13 @@ function addEntityPoint(data: Array<Record<string, any>>) {
 }
 
 function bindClickEvent() {
-  this.handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
-  this.handler.setInputAction((movement) => {
-    if (this.graphicLayer) {
-      this.graphicLayer.clear()
+  handler = new Cesium.ScreenSpaceEventHandler($vc.viewer.scene.canvas)
+  handler.setInputAction((movement) => {
+    if (graphicLayer) {
+      graphicLayer.clear()
     }
 
-    const pick = viewer.scene.pick(movement.position)
+    const pick = $vc.viewer.scene.pick(movement.position)
     if (Cesium.defined(pick)) {
       const clickEntity = pick.id
       addDivPopup(clickEntity)
@@ -103,23 +103,24 @@ function bindClickEvent() {
 }
 
 function addDivPopup(entity) {
-  if (!this.graphicLayer) {
-    this.graphicLayer = new mars3d.layer.DivLayer()
-    $map.addLayer(this.graphicLayer)
+  if (graphicLayer) {
+    graphicLayer = new mars3d.layer.DivLayer()
+    $vc.map.addLayer(graphicLayer)
   }
 
   let imgHtml = ''
   const entityIndex = entity.properties.getValue().index
-  const imgPathList = this.overviewData[entityIndex]['图片'].split(',')
+  const imgPathList = overviewData[entityIndex]['图片'].split(',')
+
   if (imgPathList.length === 1) {
     imgHtml = `<img style="height:100px;width:100%;object-fit:contain;"
-        src="${baseUrl}static/旅游数据/A级景区图片/${imgPathList[0]}">`
+        src="/static/旅游数据/A级景区图片/${imgPathList[0]}">`
   }
   if (imgPathList.length > 1) {
     imgHtml = `<img style="height:100px;width:100%;object-fit:contain;"
-        src="${baseUrl}static/旅游数据/A级景区图片/${imgPathList[0]}">`
+        src="/static/旅游数据/A级景区图片/${imgPathList[0]}">`
     imgHtml += `<img style="height:100px;width:100%;object-fit:contain;"
-        src="${baseUrl}static/旅游数据/A级景区图片/${imgPathList[1].trim()}">`
+        src="/static/旅游数据/A级景区图片/${imgPathList[1].trim()}">`
   }
 
   const graphic = new mars3d.graphic.DivGraphic({
@@ -136,7 +137,7 @@ function addDivPopup(entity) {
       clampToGround: true,
     },
   })
-  this.graphicLayer.addGraphic(graphic)
+  graphicLayer.addGraphic(graphic)
 }
 
 // export default {
@@ -284,6 +285,9 @@ function addDivPopup(entity) {
 </script>
 
 <style lang="scss" scoped>
+.analysis-panel {
+  display: block !important;
+}
 .content {
   width: 355px;
   .cell {
