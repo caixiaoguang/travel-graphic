@@ -1,22 +1,17 @@
 <template>
-  <!-- <div class="drawer-button" @click="showDrawer = true" v-show="!showDrawer">
+  <div class="drawer-button" @click="showDrawer = true" v-show="!showDrawer">
     <i class="el-icon-s-unfold"></i>
-  </div> -->
+  </div>
 
-  <!-- <over-view v-if="ready" :active="overview"></over-view>
+  <over-view v-if="ready" :active="overview"></over-view>
   <cylinder-you-shi v-if="ready" :active="youShi"></cylinder-you-shi>
   <focus-province v-if="ready" :active="focusProvince"></focus-province>
-  <poly-line layerName="gzs_polyline" v-if="ready" :active="district" /> -->
+  <poly-line layerName="gzs_polyline" v-if="ready" :active="district" />
+  -->
 
-  <!-- <poly-line
-    layerName="gzs_road"
-    :hasMaterial="true"
-    :materialStyle="{ width: 10 }"
-    v-if="ready"
-    :active="road"
-  /> -->
+  <poly-line layerName="gzs_road" :hasMaterial="true" :materialStyle="{ width: 10 }" v-if="ready" :active="road" />
 
-  <!-- <vc-primitive-tileset
+  <vc-primitive-tileset
     url="http://159.75.121.194/xingyi/tileset.json"
     @readyPromise="onTilesetReady"
     v-if="photo"
@@ -34,9 +29,9 @@
           <el-radio label="nightMap">暗色地图</el-radio>
         </el-radio-group>
       </div>
-    </div> -->
+    </div>
 
-  <!-- <div class="layer-item">
+  <div class="layer-item">
       <div class="layer-name">
         <i class="el-icon-sunny"></i>
         <span>天气</span>
@@ -68,9 +63,9 @@
         <el-checkbox v-model="youShi">优势度</el-checkbox>
         <el-checkbox v-model="focusProvince">重点县</el-checkbox>
       </div>
-    </div> -->
+    </div>
 
-  <!-- <div class="layer-item" v-if="layerType === 'threeD'">
+  <div class="layer-item" v-if="layerType === 'threeD'">
       <div class="layer-name">
         <i class="el-icon-sunny"></i>
         <span>三维图层</span>
@@ -94,14 +89,14 @@
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{ ready: boolean; layerType: string }>()
 </script>
 
-<!-- <script>
+<script>
 import { createSnowStage, createRainStage } from '@/utils/weather_glsl.js'
 import OverView from '@/components/overview/OverView'
 import CylinderYouShi from '@/components/CylinderYouShi'
@@ -248,56 +243,57 @@ export default {
 }
 </script> -->
 
-<style lang="scss" scoped>
-$bgColor: #3f4854;
+  <style lang="scss" scoped>
+    $bgColor: #3f4854;
 
-.drawer-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 1000;
-  color: #fff;
-  font-size: 30px;
-  cursor: pointer;
-  &:hover {
-    color: rgb(233, 232, 232);
-  }
-}
-
-.layer-panel {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  width: 190px;
-  height: 100vh;
-  padding: 12px 15px;
-  background-color: $bgColor;
-  border: 2px solid #275d926e;
-  color: #fff;
-
-  .layer-item {
-    margin-bottom: 10px;
-    .layer-name {
-      font-size: 15px;
-      background-color: #fff;
-      background-color: #34c9ee83;
+    .drawer-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
       color: #fff;
-      border-radius: 5px;
-      padding: 6px;
-      i {
-        margin-right: 5px;
-        font-weight: 1000;
+      font-size: 30px;
+      cursor: pointer;
+      &:hover {
+        color: rgb(233, 232, 232);
       }
     }
 
-    .layer-switch {
-      padding: 5px;
+    .layer-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      width: 190px;
+      height: 100vh;
+      padding: 12px 15px;
+      background-color: $bgColor;
+      border: 2px solid #275d926e;
+      color: #fff;
+
+      .layer-item {
+        margin-bottom: 10px;
+        .layer-name {
+          font-size: 15px;
+          background-color: #fff;
+          background-color: #34c9ee83;
+          color: #fff;
+          border-radius: 5px;
+          padding: 6px;
+          i {
+            margin-right: 5px;
+            font-weight: 1000;
+          }
+        }
+
+        .layer-switch {
+          padding: 5px;
+        }
+      }
+      .slider-wrap {
+        padding-top: 10px;
+        font-size: 14px;
+      }
     }
-  }
-  .slider-wrap {
-    padding-top: 10px;
-    font-size: 14px;
-  }
-}
-</style>
+  </style>
+</template>

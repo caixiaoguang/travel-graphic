@@ -1,14 +1,17 @@
 <template>
   <div class="home">
-    <!-- <head-title @changeLayerType="changeLayerType" /> -->
+    <head-title @changeLayerType="changeLayerType" />
     <!-- <div class="baselayer-control"></div> -->
     <vc-config-provider>
       <vc-viewer :show-credit="false" fullscreen-button @ready="onViewerReady">
+        <common-layer></common-layer>
         <vc-ajax-bar color="red" size="4px" positioning="fixed"></vc-ajax-bar>
 
         <vc-navigation
+          :offset="[10, 80]"
           :otherOpts="{
             position: 'bottom',
+            offset: [0, 25],
             statusBarOpts: { background: 'rgba(0,0,0,.6)' },
             distancelegendOpts: { background: 'rgba(0,0,0,.6)' },
           }"
@@ -32,7 +35,7 @@
           position="top-right"
           :measurements="['polyline', 'area', 'vertical']"
           :mainFabOpts="{ color: 'rgba(0,0,0,.6)' }"
-          :offset="[360, 40]"
+          :offset="[360, 80]"
         />
 
         <!-- <terrain-clip /> -->
@@ -45,21 +48,22 @@
 
 <script setup lang="ts">
 import type { VcReadyObject } from 'vue-cesium/es/utils/types'
+
 const ready = ref(false)
 const layerType = ref('travel')
 
 function onViewerReady(readyObj: VcReadyObject) {
   const { Cesium, viewer, map } = readyObj
-  // window.Cesium = Cesium
-  // window.viewer = viewer
-  // window.$map = map
+  window.Cesium = Cesium
+  window.viewer = viewer
+  window.$map = map
   // ready.value = true
-  // viewer.selectedEntity = undefined
+  viewer.selectedEntity = undefined
 
   viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(106.69, 26.336, 5000),
   })
-  //   // viewer.scene.globe.depthTestAgainstTerrain = true;
+  viewer.scene.globe.depthTestAgainstTerrain = true
 }
 
 // function viewerReady(e) {
@@ -83,7 +87,7 @@ function changeLayerType(type: string) {
 
 <style lang="scss" scoped>
 .home {
-  height: 100vh;
+  height: calc(100vh + 25px);
   :deep(.vc-location-other-controls) {
     button {
       font-size: 0.8rem;

@@ -15,6 +15,7 @@ module.exports = {
   },
   globals: {
     Cesium: true,
-    require: true
+    require: true,
+    mars3d: true
   }
 };
