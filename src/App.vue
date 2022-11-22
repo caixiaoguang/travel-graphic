@@ -3,7 +3,7 @@
     <head-title @changeLayerType="changeLayerType" />
     <!-- <div class="baselayer-control"></div> -->
     <vc-config-provider>
-      <vc-viewer :show-credit="false" fullscreen-button @ready="onViewerReady">
+      <vc-viewer :show-credit="false" :info-box="false" fullscreen-button @ready="onViewerReady">
         <common-layer></common-layer>
         <vc-ajax-bar color="red" size="4px" positioning="fixed"></vc-ajax-bar>
 
@@ -16,11 +16,6 @@
             distancelegendOpts: { background: 'rgba(0,0,0,.6)' },
           }"
         />
-
-        <vc-layer-imagery>
-          <!-- <vc-imagery-provider-baidu ref="provider" mapStyle="dark" :projection-transforms="{ from: 'BD09', to: 'WGS84' }" /> -->
-          <vc-imagery-provider-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0" ref="provider" />
-        </vc-layer-imagery>
 
         <!-- <vc-terrain-provider-tianditu ref="provider" token="436ce7e50d27eede2f2929307e6b33c0"></vc-terrain-provider-tianditu> -->
 

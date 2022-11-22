@@ -1,5 +1,7 @@
-<template></template>
-<script setup lang="ts">
+<script setup>
+import { useVueCesium } from 'vue-cesium'
+const $vc = useVueCesium()
+
 const defaultLineStyle = {
   outline: true,
   outlineWidth: 2,
@@ -22,84 +24,157 @@ const props = defineProps({
   lineStyle: {},
 })
 
-export default {
-  props: {
-    active: false,
-    layerName: '',
-    hasMaterial: false,
-    materialStyle: {},
-    lineStyle: {},
-  },
-  created() {
-    // this.addGeojsonLayer();
-    this.addLayer()
-  },
-  watch: {
-    active(newVal) {
-      console.log('sss')
-      this.graphicLayer && (this.graphicLayer.show = newVal)
-    },
-  },
-  methods: {
-    addLayer() {
-      this.graphicLayer = new mars3d.layer.GraphicLayer()
-      $map.addLayer(this.graphicLayer)
-      Cesium.GeoJsonDataSource.load(`/static/${this.layerName}.json`).then((dataSource) => {
-        this.addGraphics(dataSource)
-      })
-    },
-    addGraphics(dataSource) {
-      let positions = []
-      dataSource.entities.values.forEach((feature) => {
-        const primitive = new mars3d.graphic.PolylinePrimitive({
-          positions: feature.polyline.positions._value,
-          style: {
-            width: 6,
-            material: mars3d.MaterialUtil.createMaterial(mars3d.MaterialType.LineFlow, {
-              image: require('../assets/img/LinkPulse.png'),
-              color: Cesium.Color.CORAL,
-              repeat: new Cesium.Cartesian2(10.0, 1.0),
-              speed: 1,
-            }),
-          },
-        })
-        this.graphicLayer.show = this.active
-        this.graphicLayer.addGraphic(primitive)
-      })
-    },
-    addGeojsonLayer() {
-      this.graphicLayer = new mars3d.layer.GraphicLayer()
-      $map.addLayer(this.graphicLayer)
+let graphicLayer
 
-      const layer = new mars3d.layer.GeoJsonLayer({
-        name: this.layerName,
-        url: `${baseUrl}static/${this.layerName}.json`,
-        symbol: {
-          styleOptions: {
-            // outline: true,
-            // outlineWidth: 2,
-            // color: "#34c9ee83",
-            materialType: 'PolylineGlow',
-            glowPower: 0.06, //发光强度
-            width: 30, //线宽
-            color: '#34c9ee',
-            opacity: 0.9,
-            clampToGround: true,
-          },
-        },
-        onCreateGraphic: (data) => {
-          // console.log(data);
-        },
-      })
-      $map.addLayer(layer)
-      layer.show = false
-      this.graphicLayer.show = this.active
-    },
-  },
-  beforeUnmount() {
-    this.graphicLayer && $map.removeLayer(this.graphicLayer)
-  },
+onMounted(addLayer)
+
+watchEffect(() => {
+  if (props.active) {
+    graphicLayer && (graphicLayer.show = true)
+  } else {
+    graphicLayer && (graphicLayer.show = false)
+  }
+})
+
+onUnmounted(() => {
+  // graphicLayer && $map.removeLayer(graphicLayer)
+})
+
+async function addLayer() {
+  await $vc.creatingPromise
+  graphicLayer = new mars3d.layer.GraphicLayer()
+  $map.addLayer(graphicLayer)
+  Cesium.GeoJsonDataSource.load(`/static/${props.layerName}.json`).then((dataSource) => {
+    addGraphics(dataSource)
+  })
 }
+
+function addGraphics(dataSource) {
+  dataSource.entities.values.forEach((feature) => {
+    const primitive = new mars3d.graphic.PolylinePrimitive({
+      positions: feature.polyline.positions._value,
+      style: {
+        width: 6,
+        material: mars3d.MaterialUtil.createMaterial(mars3d.MaterialType.LineFlow, {
+          image: '/img/LinkPulse.png',
+          color: Cesium.Color.CORAL,
+          repeat: new Cesium.Cartesian2(10.0, 1.0),
+          speed: 1,
+        }),
+      },
+    })
+    graphicLayer.show = props.active
+    graphicLayer.addGraphic(primitive)
+  })
+}
+
+function addGeojsonLayer() {
+  graphicLayer = new mars3d.layer.GraphicLayer()
+  $map.addLayer(graphicLayer)
+
+  const layer = new mars3d.layer.GeoJsonLayer({
+    name: props.layerName,
+    url: `/static/${props.layerName}.json`,
+    symbol: {
+      styleOptions: {
+        // outline: true,
+        // outlineWidth: 2,
+        // color: "#34c9ee83",
+        materialType: 'PolylineGlow',
+        glowPower: 0.06, //发光强度
+        width: 30, //线宽
+        color: '#34c9ee',
+        opacity: 0.9,
+        clampToGround: true,
+      },
+    },
+    onCreateGraphic: (data) => {
+      // console.log(data);
+    },
+  })
+  $map.addLayer(layer)
+  layer.show = false
+  graphicLayer.show = props.active
+}
+
+// export default {
+//   props: {
+//     active: false,
+//     layerName: '',
+//     hasMaterial: false,
+//     materialStyle: {},
+//     lineStyle: {},
+//   },
+//   created() {
+//     // addGeojsonLayer();
+//     addLayer()
+//   },
+//   watch: {
+//     active(newVal) {
+//       console.log('sss')
+//       graphicLayer && (graphicLayer.show = newVal)
+//     },
+//   },
+//   methods: {
+//     addLayer() {
+//       graphicLayer = new mars3d.layer.GraphicLayer()
+//       $map.addLayer(graphicLayer)
+//       Cesium.GeoJsonDataSource.load(`/static/${layerName}.json`).then((dataSource) => {
+//         addGraphics(dataSource)
+//       })
+//     },
+//     addGraphics(dataSource) {
+//       let positions = []
+//       dataSource.entities.values.forEach((feature) => {
+//         const primitive = new mars3d.graphic.PolylinePrimitive({
+//           positions: feature.polyline.positions._value,
+//           style: {
+//             width: 6,
+//             material: mars3d.MaterialUtil.createMaterial(mars3d.MaterialType.LineFlow, {
+//               image: require('../assets/img/LinkPulse.png'),
+//               color: Cesium.Color.CORAL,
+//               repeat: new Cesium.Cartesian2(10.0, 1.0),
+//               speed: 1,
+//             }),
+//           },
+//         })
+//         graphicLayer.show = active
+//         graphicLayer.addGraphic(primitive)
+//       })
+//     },
+//     addGeojsonLayer() {
+//       graphicLayer = new mars3d.layer.GraphicLayer()
+//       $map.addLayer(graphicLayer)
+
+//       const layer = new mars3d.layer.GeoJsonLayer({
+//         name: layerName,
+//         url: `${baseUrl}static/${layerName}.json`,
+//         symbol: {
+//           styleOptions: {
+//             // outline: true,
+//             // outlineWidth: 2,
+//             // color: "#34c9ee83",
+//             materialType: 'PolylineGlow',
+//             glowPower: 0.06, //发光强度
+//             width: 30, //线宽
+//             color: '#34c9ee',
+//             opacity: 0.9,
+//             clampToGround: true,
+//           },
+//         },
+//         onCreateGraphic: (data) => {
+//           // console.log(data);
+//         },
+//       })
+//       $map.addLayer(layer)
+//       layer.show = false
+//       graphicLayer.show = active
+//     },
+//   },
+//   beforeUnmount() {
+//     graphicLayer && $map.removeLayer(graphicLayer)
+//   },
+// }
 </script>
 
 <style></style>

@@ -21,32 +21,47 @@
         </el-form-item>
       </el-form>
     </div>
-    <polyline layerName="gzs_polyline" :active="district" />
+
+    <vc-layer-imagery v-if="baseMap === 'satellite'">
+      <vc-imagery-provider-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0" ref="provider" />
+    </vc-layer-imagery>
+    <vc-layer-imagery v-else>
+      <vc-imagery-provider-baidu ref="provider" mapStyle="midnight" :projection-transforms="{ from: 'BD09', to: 'WGS84' }" />
+    </vc-layer-imagery>
+
+    <Polyline layerName="gzs_polyline" :active="district" />
+
+    <Province v-if="road" />
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { createSnowStage, createRainStage } from '@/utils/weather_glsl.js'
-// import Polyline from '@/components/Polyline.vue'
+import Polyline from '@/components/Polyline.vue'
+import { useVueCesium } from 'vue-cesium'
 
-const baseMap = ref('satellite')
+const $vc = useVueCesium()
+
+const baseMap = ref('nightMap')
 const rain = ref(false)
 const snow = ref(false)
 const district = ref(false)
 const road = ref(false)
 
+const ready = ref(false)
+
 let collection, rainSystem, snowSystem
 
 function changeBaseMap() {}
 
-function handleSnow(value: string) {
+function handleSnow(value) {
   if (value) {
     addWeather('snow')
   } else {
     removeWeather('snow')
   }
 }
-function handleRain(value: string) {
+function handleRain(value) {
   if (value) {
     addWeather('rain')
   } else {
@@ -54,14 +69,14 @@ function handleRain(value: string) {
   }
 }
 
-function addWeather(type: string) {
+function addWeather(type) {
   if (!window.Cesium || !window.viewer) {
     snow.value = false
     rain.value = false
     return
   }
 
-  collection = viewer.scene.postProcessStages
+  collection = window.viewer.scene.postProcessStages
 
   if (type === 'rain') {
     rainSystem = createRainStage()
@@ -71,7 +86,7 @@ function addWeather(type: string) {
     collection.add(snowSystem)
   }
 }
-function removeWeather(type: string) {
+function removeWeather(type) {
   if (type === 'rain') {
     collection.remove(rainSystem)
   } else {
