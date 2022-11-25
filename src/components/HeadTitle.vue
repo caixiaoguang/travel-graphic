@@ -1,5 +1,5 @@
 <template>
-  <div class="head">
+  <div class="head-bar">
     <div class="menu left">
       <div :class="['diamond-btn', { active: active === item.index }]" v-for="item in leftMenu" :key="item.title" @click="active = item.index">
         <el-icon>
@@ -17,10 +17,13 @@
         <div class="text">{{ item.title }}</div>
       </div>
     </div>
+
+    <traval-info v-if="active === 'overview'"></traval-info>
   </div>
 </template>
 
 <script setup lang="ts">
+const emit = defineEmits(['updateLayer'])
 const active = ref('3DSimulation')
 const leftMenu = [
   { title: '旅游概况', index: 'overview', icon: 'Promotion' },
@@ -47,12 +50,12 @@ const rightMenu = [
 </style>
 
 <style lang="scss" scoped>
-.head {
+.head-bar {
   position: absolute;
   left: 0;
   top: 0;
   height: 70px;
-  line-height: 60px;
+  // line-height: 60px;
   display: flex;
   justify-content: space-between;
   z-index: 100;
@@ -60,7 +63,7 @@ const rightMenu = [
   width: 100%;
   background: no-repeat center url('/img/title-bg.png');
   background-size: 100% 100%;
-  padding: 5px;
+  padding: 7px;
   .title {
     width: 600px;
     height: 100%;

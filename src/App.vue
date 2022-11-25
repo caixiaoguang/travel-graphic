@@ -5,6 +5,7 @@
     <vc-config-provider>
       <vc-viewer :show-credit="false" :info-box="false" fullscreen-button @ready="onViewerReady">
         <common-layer></common-layer>
+
         <vc-ajax-bar color="red" size="4px" positioning="fixed"></vc-ajax-bar>
 
         <vc-navigation
@@ -18,8 +19,6 @@
         />
 
         <!-- <vc-terrain-provider-tianditu ref="provider" token="436ce7e50d27eede2f2929307e6b33c0"></vc-terrain-provider-tianditu> -->
-
-        <over-view />
 
         <!-- <layer :ready="ready" :layerType="layerType" /> -->
 

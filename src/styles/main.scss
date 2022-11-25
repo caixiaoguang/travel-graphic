@@ -16,8 +16,6 @@ body,
 
 .analysis-panel {
     position: absolute;
-    bottom: 20px;
-    right: 10px;
     z-index: 30000;
     color: #34c9ee;
     padding: 15px;
@@ -33,6 +31,9 @@ body,
         font-size: 16px;
         font-weight: bold;
         text-align: center;
+        .el-icon{
+            margin-right: 5px;
+        }
     }
     .content {
         display: flex;
@@ -50,7 +51,7 @@ body,
                 }
             }
             .count {
-                padding-left: 5px;
+                padding-left: 10px;
                 span {
                     font-size: 20px;
                     color: yellow;

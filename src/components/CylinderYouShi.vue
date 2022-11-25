@@ -18,12 +18,14 @@
 
 <script>
 import { loadRemoteFile } from '@/utils/utils.js'
+
+import { useVueCesium } from 'vue-cesium'
+
 import geostats from 'geostats'
 
 import center from '@/utils/center.json'
 
-const baseUrl = process.env.BASE_URL
-const youshiUrl = `${baseUrl}static/旅游数据/贵州旅游优势度.xlsx`
+const youshiUrl = `/static/旅游数据/贵州旅游优势度.xlsx`
 
 export default {
   props: {
@@ -36,7 +38,9 @@ export default {
       columns: ['优势度等级', '个数'],
     }
   },
-  created() {
+  async created() {
+    const $vc = useVueCesium()
+    await $vc.creatingPromise
     this.loadYouSHiData()
   },
   watch: {
@@ -48,7 +52,6 @@ export default {
     async loadYouSHiData() {
       const excelData = await loadRemoteFile(youshiUrl)
       const data = excelData[0]
-      // this.anaData = excelData[1];
       if (!this.graphicLayer) {
         this.graphicLayer = new mars3d.layer.GraphicLayer()
         $map.addLayer(this.graphicLayer)

@@ -1,5 +1,5 @@
 <template>
-  <div class="analysis-panel">
+  <div class="analysis-panel overview-layer" v-loading="loading" element-loading-background="transparent">
     <div class="title">统计情况</div>
     <div class="content">
       <div class="cell" v-for="item in anaData" :key="item">
@@ -16,17 +16,18 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { loadRemoteFile } from '@/utils/utils'
+<script setup>
+import { loadRemoteFile } from '@/utils/utils.js'
 import { useVueCesium } from 'vue-cesium'
-import type { VcViewerProvider, VcReadyObject } from 'vue-cesium/es/utils/types'
 
-const $vc: VcViewerProvider = useVueCesium()
+const loading = ref(false)
+
+const $vc = useVueCesium()
 
 // const baseUrl = process.env.BASE_URL
 const overviewDataUrl = `/static/旅游数据/4A5A景区.xlsx`
 const columns = ['旅游资源类型', '个数']
-let overviewData: any[], collection, handler, graphicLayer: any
+let overviewData, collection, handler, graphicLayer
 
 const anaData = ref([])
 
@@ -36,14 +37,28 @@ onMounted(async () => {
   bindClickEvent()
 })
 
+onUnmounted(() => {
+  if (graphicLayer) {
+    $map.removeLayer(graphicLayer)
+  }
+
+  if (collection) {
+    $vc.viewer.dataSources.remove(collection)
+  }
+
+  handler.destroy()
+})
+
 async function getOverView() {
+  loading.value = true
   const data = await loadRemoteFile(overviewDataUrl)
+  loading.value = false
   overviewData = data[0]
   anaData.value = data[2]
   addEntityPoint(overviewData)
 }
 
-function addEntityPoint(data: Array<Record<string, any>>) {
+function addEntityPoint(data) {
   $vc.viewer.scene.postProcessStages.fxaa.enabled = false
   collection = new $vc.Cesium.CustomDataSource()
 
@@ -159,13 +174,19 @@ function addDivPopup(entity) {
 </script>
 
 <style lang="scss" scoped>
-.analysis-panel {
-  display: block !important;
-}
-.content {
-  width: 355px;
-  .cell {
-    width: 50%;
+.overview-layer {
+  height: 300px;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  .content {
+    width: 350px;
+    .cell {
+      width: 50%;
+    }
   }
 }
+// .analysis-panel {
+//   display: block !important;
+// }
 </style>
