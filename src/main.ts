@@ -18,6 +18,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
+window.baseUrl = import.meta.env.BASE_URL || '/'
+
 app.use(createPinia())
 app.use(router)
 app.use(VueCesium, {

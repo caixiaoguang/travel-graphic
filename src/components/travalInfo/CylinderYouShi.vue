@@ -30,8 +30,6 @@ import geostats from 'geostats'
 
 import center from '@/utils/center.json'
 
-const youshiUrl = `/static/旅游数据/贵州旅游优势度.xlsx`
-
 export default {
   props: {
     active: false,
@@ -55,6 +53,7 @@ export default {
   },
   methods: {
     async loadYouSHiData() {
+      const youshiUrl = `${window.baseUrl}static/旅游数据/贵州旅游优势度.xlsx`
       const excelData = await loadRemoteFile(youshiUrl)
       const data = excelData[0]
       if (!this.graphicLayer) {

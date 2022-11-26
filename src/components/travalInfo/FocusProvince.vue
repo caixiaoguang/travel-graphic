@@ -43,7 +43,6 @@
 import { degree2decimal, loadRemoteFile } from '@/utils/utils.js'
 import { useVueCesium } from 'vue-cesium'
 
-const excelUrl = `/static/旅游数据/重点县`
 const excelNameList = ['520628', '522326', '522327']
 const provinveDic = {
   520628: { name: '松桃县', center: [105.79, 24.91] },
@@ -73,6 +72,7 @@ export default {
   },
   methods: {
     getData() {
+      const excelUrl = `${window.baseUrl}static/旅游数据/重点县`
       excelNameList.forEach((el) => {
         loadRemoteFile(`${excelUrl}/${el}.xls`).then(
           (res) => {
@@ -182,7 +182,7 @@ export default {
         var graphic = new mars3d.graphic.BillboardEntity({
           position: Cesium.Cartesian3.fromDegrees(degree2decimal(item['东经']), degree2decimal(item['北纬']), 0),
           style: {
-            image: '/img/mark.png',
+            image: `${window.baseUrl}img/mark.png`,
             horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
             verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
             scaleByDistance: new Cesium.NearFarScalar(1000, 0.7, 5000000, 0.3),

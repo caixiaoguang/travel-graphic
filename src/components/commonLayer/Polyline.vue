@@ -44,7 +44,7 @@ async function addLayer() {
   await $vc.creatingPromise
   graphicLayer = new mars3d.layer.GraphicLayer()
   $map.addLayer(graphicLayer)
-  Cesium.GeoJsonDataSource.load(`/static/${props.layerName}.json`).then((dataSource) => {
+  Cesium.GeoJsonDataSource.load(`${window.baseUrl}static/${props.layerName}.json`).then((dataSource) => {
     addGraphics(dataSource)
   })
 }
@@ -56,7 +56,7 @@ function addGraphics(dataSource) {
       style: {
         width: 6,
         material: mars3d.MaterialUtil.createMaterial(mars3d.MaterialType.LineFlow, {
-          image: '/img/LinkPulse.png',
+          image: `${window.baseUrl}/img/LinkPulse.png`,
           color: Cesium.Color.CORAL,
           repeat: new Cesium.Cartesian2(10.0, 1.0),
           speed: 1,

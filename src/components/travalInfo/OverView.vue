@@ -25,12 +25,14 @@
 import { loadRemoteFile } from '@/utils/utils.js'
 import { useVueCesium } from 'vue-cesium'
 
+const props = defineProps({ active: Boolean })
+
 const loading = ref(false)
 
 const $vc = useVueCesium()
 
-// const baseUrl = process.env.BASE_URL
-const overviewDataUrl = `/static/旅游数据/4A5A景区.xlsx`
+const overviewDataUrl = `${window.baseUrl}static/旅游数据/4A5A景区.xlsx`
+
 const columns = ['旅游资源类型', '个数']
 let overviewData, collection, handler, graphicLayer
 
@@ -40,6 +42,10 @@ onMounted(async () => {
   await $vc.creatingPromise
   getOverView()
   bindClickEvent()
+})
+
+watch(props.active, (newVal) => {
+  collection && (collection.show = newVal)
 })
 
 onUnmounted(() => {
@@ -87,7 +93,7 @@ function addEntityPoint(data) {
             }
           : undefined,
       billboard: {
-        image: item['A级'] === '4A' ? '/img/4a.png' : '/img/5a.png',
+        image: item['A级'] === '4A' ? `${window.baseUrl}img/4a.png` : `${window.baseUrl}img/5a.png`,
         distanceDisplayCondition: item['A级'] === '4A' ? new $vc.Cesium.DistanceDisplayCondition(0, 500000.0) : undefined,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         height: 32,
@@ -106,7 +112,7 @@ function addEntityPoint(data) {
     collection.entities.add(entity)
   }
   $vc.viewer.dataSources.add(collection)
-  collection.show = true
+  collection.show = false
 }
 
 function bindClickEvent() {
