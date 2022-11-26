@@ -2,7 +2,7 @@
   <div class="analysis-panel traval-layer">
     <div class="title">
       <el-icon>
-        <Component is="Promotion" />
+        <Promotion />
       </el-icon>
       <span>旅游概况</span>
     </div>
@@ -18,15 +18,16 @@
       </el-form>
     </div>
 
-    <over-view v-if="travalList.includes('overview')" />
+    <over-view v-if="travalList.includes('overview') && active" />
 
-    <cylinder-you-shi :active="travalList.includes('youshidu')"></cylinder-you-shi>
+    <cylinder-you-shi :active="travalList.includes('youshidu') && active"></cylinder-you-shi>
 
-    <!-- <focus-province v-if="ready" :active="focusProvince"></focus-province> -->
+    <focus-province :active="travalList.includes('province') && active"></focus-province>
   </div>
 </template>
 
 <script setup>
+defineProps({ active: Boolean })
 const travalList = ref([])
 </script>
 
@@ -34,7 +35,7 @@ const travalList = ref([])
 .traval-layer {
   //   position: fixed;
   left: 250px;
-  top: 70px;
+  top: 80px;
   .title {
     margin-bottom: 10px;
   }

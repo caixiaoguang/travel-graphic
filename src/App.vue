@@ -1,10 +1,9 @@
 <template>
   <div class="home">
-    <head-title @changeLayerType="changeLayerType" />
     <!-- <div class="baselayer-control"></div> -->
     <vc-config-provider>
       <vc-viewer :show-credit="false" :info-box="false" fullscreen-button @ready="onViewerReady">
-        <common-layer></common-layer>
+        <head-title @changeLayerType="changeLayerType" />
 
         <vc-ajax-bar color="red" size="4px" positioning="fixed"></vc-ajax-bar>
 
@@ -57,7 +56,7 @@ function onViewerReady(readyObj: VcReadyObject) {
   viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(106.69, 26.336, 5000),
   })
-  viewer.scene.globe.depthTestAgainstTerrain = true
+  // viewer.scene.globe.depthTestAgainstTerrain = true
 }
 
 // function viewerReady(e) {

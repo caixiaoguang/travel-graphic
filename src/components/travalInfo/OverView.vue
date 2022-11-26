@@ -1,6 +1,11 @@
 <template>
   <div class="analysis-panel overview-layer" v-loading="loading" element-loading-background="transparent">
-    <div class="title">统计情况</div>
+    <div class="title">
+      <el-icon>
+        <PieChart />
+      </el-icon>
+      <div>概况</div>
+    </div>
     <div class="content">
       <div class="cell" v-for="item in anaData" :key="item">
         <div class="name">
@@ -55,7 +60,9 @@ async function getOverView() {
   loading.value = false
   overviewData = data[0]
   anaData.value = data[2]
-  addEntityPoint(overviewData)
+  nextTick(() => {
+    addEntityPoint(overviewData)
+  })
 }
 
 function addEntityPoint(data) {
@@ -177,8 +184,8 @@ function addDivPopup(entity) {
 .overview-layer {
   height: 300px;
   position: fixed;
-  bottom: 10px;
-  right: 10px;
+  bottom: 25px;
+  right: 370px;
   .content {
     width: 350px;
     .cell {

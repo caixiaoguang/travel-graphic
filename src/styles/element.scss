@@ -4,4 +4,11 @@
     --el-text-color-regular:var(--el-color-primary)
     --el-text-color-regular:#fff;
     --el-fill-color-blank:transparent;
+    --el-tag-border-color:var(--el-color-primary);
+    --el-border-color-light:#34c9ee61;
+    --el-slider-button-size:15px;
+  }
+
+  .el-slider__button{
+    background-color:var(--el-color-primary);
   }

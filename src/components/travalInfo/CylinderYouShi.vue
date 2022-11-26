@@ -1,6 +1,11 @@
 <template>
-  <div class="analysis-panel" v-show="active">
-    <div class="title">统计情况</div>
+  <div class="analysis-panel youshidu" v-show="active">
+    <div class="title">
+      <el-icon>
+        <Histogram />
+      </el-icon>
+      <div>优势度</div>
+    </div>
     <div class="content">
       <div class="cell" v-for="item in Object.keys(anaData)" :key="item">
         <div class="name">
@@ -69,7 +74,8 @@ export default {
       }
       const serie = new geostats(values)
       serie.setPrecision(3)
-      serie.getClassJenks(3)
+      // serie.getClassJenks(3)
+      serie.getClassEqInterval(3)
       const bounds = serie.bounds
       serie.serie.forEach((el) => {
         if (el >= bounds[0] && el < bounds[1]) {
@@ -143,6 +149,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.youshidu {
+  position: fixed;
+  right: 755px;
+  bottom: 25px;
+}
 .cell {
   padding-right: 20px;
   &:last-child {

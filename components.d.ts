@@ -7,8 +7,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    CommonLayer: typeof import('./src/components/CommonLayer.vue')['default']
-    CylinderYouShi: typeof import('./src/components/CylinderYouShi.vue')['default']
+    CommonLayer: typeof import('./src/components/commonLayer/CommonLayer.vue')['default']
+    CylinderYouShi: typeof import('./src/components/travalInfo/CylinderYouShi.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxButton: typeof import('element-plus/es')['ElCheckboxButton']
@@ -26,7 +26,7 @@ declare module '@vue/runtime-core' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
-    FocusProvince: typeof import('./src/components/FocusProvince.vue')['default']
+    FocusProvince: typeof import('./src/components/travalInfo/FocusProvince.vue')['default']
     HeadTitle: typeof import('./src/components/HeadTitle.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
@@ -50,14 +50,16 @@ declare module '@vue/runtime-core' {
     MarsSwitch: typeof import('./src/mars-ui/mars-switch/index.vue')['default']
     MarsTable: typeof import('./src/mars-ui/mars-table/index.vue')['default']
     MarsTextarea: typeof import('./src/mars-ui/mars-textarea/index.vue')['default']
-    OverView: typeof import('./src/components/overview/OverView.vue')['default']
-    Polyline: typeof import('./src/components/Polyline.vue')['default']
-    Province: typeof import('./src/components/Province.vue')['default']
+    OverView: typeof import('./src/components/travalInfo/OverView.vue')['default']
+    Polyline: typeof import('./src/components/commonLayer/Polyline.vue')['default']
+    Province: typeof import('./src/components/commonLayer/Province.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TerrainClip: typeof import('./src/components/TerrainClip.vue')['default']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
-    TravalInfo: typeof import('./src/components/TravalInfo.vue')['default']
+    ThreeSimulation: typeof import('./src/components/3DSimulation/ThreeSimulation.vue')['default']
+    TravalInfo: typeof import('./src/components/travalInfo/TravalInfo.vue')['default']
+    VectorData: typeof import('./src/components/vectorData/VectorData.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
   export interface ComponentCustomProperties {

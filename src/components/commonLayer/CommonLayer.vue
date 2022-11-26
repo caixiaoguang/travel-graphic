@@ -1,6 +1,11 @@
 <template>
-  <div class="analysis-panel common-layer">
-    <div class="title">基础图层</div>
+  <div :class="['analysis-panel', 'common-layer', { show }]">
+    <div class="title">
+      <el-icon>
+        <Operation />
+      </el-icon>
+      基础图层
+    </div>
     <div class="content">
       <el-form label-position="top">
         <el-form-item label="底图">
@@ -23,10 +28,10 @@
     </div>
 
     <vc-layer-imagery v-if="baseMap === 'satellite'">
-      <!-- <vc-imagery-provider-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0" ref="provider" /> -->
+      <vc-imagery-provider-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0" ref="provider" />
     </vc-layer-imagery>
     <vc-layer-imagery v-else>
-      <!-- <vc-imagery-provider-baidu ref="provider" mapStyle="midnight" :projection-transforms="{ from: 'BD09', to: 'WGS84' }" /> -->
+      <vc-imagery-provider-baidu ref="provider" mapStyle="midnight" :projection-transforms="{ from: 'BD09', to: 'WGS84' }" />
     </vc-layer-imagery>
 
     <Polyline layerName="gzs_polyline" :active="district" />
@@ -37,10 +42,11 @@
 
 <script setup>
 import { createSnowStage, createRainStage } from '@/utils/weather_glsl.js'
-import Polyline from '@/components/Polyline.vue'
 import { useVueCesium } from 'vue-cesium'
 
 const $vc = useVueCesium()
+
+const show = ref(true)
 
 const baseMap = ref('nightMap')
 const rain = ref(false)
@@ -97,7 +103,8 @@ function removeWeather(type) {
 .common-layer {
   padding: 20px;
   position: absolute;
-  left: 0px;
-  top: 70px;
+  left: 10px;
+  top: 80px;
+  transition: left 0.1s ease-in;
 }
 </style>

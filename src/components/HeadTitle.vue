@@ -1,16 +1,22 @@
 <template>
   <div class="head-bar">
     <div class="menu left">
-      <div :class="['diamond-btn', { active: active === item.index }]" v-for="item in leftMenu" :key="item.title" @click="active = item.index">
+      <div :class="['diamond-btn', { active: active === item.index }]" v-for="item in leftMenu" :key="item.title" @click="handleClick(item)">
         <el-icon>
           <Component :is="item.icon" />
         </el-icon>
         <div class="text">{{ item.title }}</div>
+      </div>
+      <div :class="['diamond-btn', { active: commonLayerActive }]" @click="commonLayerActive = !commonLayerActive">
+        <el-icon>
+          <Operation />
+        </el-icon>
+        基础图层
       </div>
     </div>
     <div class="title">旅游地理图谱信息系统</div>
     <div class="menu right">
-      <div :class="['diamond-btn', { active: active === item.title }]" v-for="item in rightMenu" :key="item.title" @click="active = item.title">
+      <div :class="['diamond-btn', { active: active === item.index }]" v-for="item in rightMenu" :key="item.title" @click="handleClick(item)">
         <el-icon>
           <Component :is="item.icon" />
         </el-icon>
@@ -18,13 +24,17 @@
       </div>
     </div>
 
-    <traval-info v-if="active === 'overview'"></traval-info>
+    <common-layer v-show="commonLayerActive"></common-layer>
+
+    <three-simulation v-show="active === '3DSimulation'" :active="active === '3DSimulation'"></three-simulation>
+
+    <traval-info v-show="active === 'overview'" :active="active === 'overview'"></traval-info>
   </div>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(['updateLayer'])
-const active = ref('3DSimulation')
+const active = ref('')
+const commonLayerActive = ref(true)
 const leftMenu = [
   { title: '旅游概况', index: 'overview', icon: 'Promotion' },
   { title: '三维模拟', index: '3DSimulation', icon: 'Grid' },
@@ -33,6 +43,14 @@ const rightMenu = [
   { title: '720全景', index: '720', icon: 'HelpFilled' },
   { title: '视频接入', index: 'videoMonitor', icon: 'VideoCameraFilled' },
 ]
+
+function handleClick(item) {
+  if (active.value === item.index) {
+    active.value = ''
+  } else {
+    active.value = item.index
+  }
+}
 </script>
 
 <style lang="scss">
@@ -97,6 +115,7 @@ const rightMenu = [
     background-image: url('/img/btn-bg.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
+    user-select: none;
     &:hover {
       background-size: 101% 101%;
     }
