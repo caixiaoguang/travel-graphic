@@ -18,7 +18,7 @@
       </el-form>
     </div>
 
-    <over-view v-if="travalList.includes('overview') && active" />
+    <over-view :active="travalList.includes('overview') && active" />
 
     <cylinder-you-shi :active="travalList.includes('youshidu') && active"></cylinder-you-shi>
 

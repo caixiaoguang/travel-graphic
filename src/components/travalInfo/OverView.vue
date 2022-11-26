@@ -1,5 +1,5 @@
 <template>
-  <div class="analysis-panel overview-layer" v-loading="loading" element-loading-background="transparent">
+  <div class="analysis-panel overview-layer" v-show="active" element-loading-background="transparent">
     <div class="title">
       <el-icon>
         <PieChart />
@@ -25,13 +25,9 @@
 import { loadRemoteFile } from '@/utils/utils.js'
 import { useVueCesium } from 'vue-cesium'
 
-const props = defineProps({ active: Boolean })
-
-const loading = ref(false)
+const props = defineProps({ active: { type: Boolean, default: false } })
 
 const $vc = useVueCesium()
-
-const overviewDataUrl = `${window.baseUrl}static/旅游数据/4A5A景区.xlsx`
 
 const columns = ['旅游资源类型', '个数']
 let overviewData, collection, handler, graphicLayer
@@ -44,8 +40,18 @@ onMounted(async () => {
   bindClickEvent()
 })
 
-watch(props.active, (newVal) => {
-  collection && (collection.show = newVal)
+// watch(
+//   () => props.active,
+//   (newVal) => {
+//     console.log(newVal)
+//     collection && (collection.show = newVal)
+//   },
+// )
+
+watchEffect(() => {
+  console.log(props.active)
+  collection && (collection.show = props.active)
+  graphicLayer && (graphicLayer.show = props.active)
 })
 
 onUnmounted(() => {
@@ -61,9 +67,8 @@ onUnmounted(() => {
 })
 
 async function getOverView() {
-  loading.value = true
+  const overviewDataUrl = `${window.baseUrl}static/旅游数据/4A5A景区.xlsx`
   const data = await loadRemoteFile(overviewDataUrl)
-  loading.value = false
   overviewData = data[0]
   anaData.value = data[2]
   nextTick(() => {
