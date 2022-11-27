@@ -17,6 +17,8 @@
           }"
         />
 
+        <vc-terrain-provider-cesium></vc-terrain-provider-cesium>
+
         <!-- <vc-terrain-provider-tianditu ref="provider" token="436ce7e50d27eede2f2929307e6b33c0"></vc-terrain-provider-tianditu> -->
 
         <!-- <layer :ready="ready" :layerType="layerType" /> -->

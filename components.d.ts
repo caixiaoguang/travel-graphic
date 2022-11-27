@@ -8,7 +8,10 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     CommonLayer: typeof import('./src/components/commonLayer/CommonLayer.vue')['default']
+    Contrast: typeof import('./src/components/3DSimulation/Contrast.vue')['default']
+    ContrastPlane: typeof import('./src/components/3DSimulation/ContrastPlane.vue')['default']
     CylinderYouShi: typeof import('./src/components/travalInfo/CylinderYouShi.vue')['default']
+    ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxButton: typeof import('element-plus/es')['ElCheckboxButton']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
@@ -18,6 +21,7 @@ declare module '@vue/runtime-core' {
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElSlider: typeof import('element-plus/es')['ElSlider']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     FocusProvince: typeof import('./src/components/travalInfo/FocusProvince.vue')['default']
