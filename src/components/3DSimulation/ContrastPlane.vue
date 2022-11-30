@@ -10,7 +10,7 @@ const sliderRef = ref()
 .slider {
   position: fixed;
   left: 50%;
-  top: 0px;
+  top: 60px;
   background-color: #d3d3d3;
   width: 5px;
   height: 100%;

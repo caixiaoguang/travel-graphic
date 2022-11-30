@@ -34,7 +34,7 @@
       <vc-imagery-provider-baidu ref="provider" mapStyle="midnight" :projection-transforms="{ from: 'BD09', to: 'WGS84' }" />
     </vc-layer-imagery>
 
-    <Polyline layerName="gzs_polyline" :active="district" />
+    <!-- <Polyline layerName="gzs_polyline" :active="district" /> -->
 
     <Province v-if="road" />
   </div>

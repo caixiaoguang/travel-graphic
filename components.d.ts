@@ -8,7 +8,6 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     CommonLayer: typeof import('./src/components/commonLayer/CommonLayer.vue')['default']
-    Contrast: typeof import('./src/components/3DSimulation/Contrast.vue')['default']
     ContrastPlane: typeof import('./src/components/3DSimulation/ContrastPlane.vue')['default']
     CylinderYouShi: typeof import('./src/components/travalInfo/CylinderYouShi.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -18,6 +17,7 @@ declare module '@vue/runtime-core' {
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElSlider: typeof import('element-plus/es')['ElSlider']
@@ -33,9 +33,8 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     TerrainClip: typeof import('./src/components/TerrainClip.vue')['default']
     ThreeSimulation: typeof import('./src/components/3DSimulation/ThreeSimulation.vue')['default']
+    Tileset: typeof import('./src/components/3DSimulation/Tileset.vue')['default']
+    TilesetLocationChange: typeof import('./src/components/3DSimulation/TilesetLocationChange.vue')['default']
     TravalInfo: typeof import('./src/components/travalInfo/TravalInfo.vue')['default']
-  }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

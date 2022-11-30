@@ -9,8 +9,12 @@
     --el-tag-border-color:var(--el-color-primary);
     --el-border-color-light:#34c9ee61;
     --el-slider-button-size:15px;
+    --el-bg-color-overlay:#142f49dc;
   }
 
   .el-slider__button{
     background-color:var(--el-color-primary);
+  }
+  .el-popover.el-popper,.el-popover__title{
+    color: var(--el-color-primary);
   }
