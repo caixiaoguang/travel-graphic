@@ -193,7 +193,7 @@ function addDivPopup(entity) {
 
 <style lang="scss" scoped>
 .overview-layer {
-  height: 300px;
+  min-height: 300px;
   position: fixed;
   bottom: 25px;
   right: 370px;

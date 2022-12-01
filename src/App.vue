@@ -58,7 +58,7 @@ function onViewerReady(readyObj: VcReadyObject) {
   viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(106.69, 26.336, 5000),
   })
-  // viewer.scene.globe.depthTestAgainstTerrain = true
+  viewer.scene.globe.depthTestAgainstTerrain = true
 }
 
 // function viewerReady(e) {
