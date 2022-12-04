@@ -1,10 +1,10 @@
 <template>
-  <div class="analysis-panel photo-wrap">
+  <div class="analysis-panel video-wrap">
     <div class="title">
       <el-icon>
-        <HelpFilled />
+        <VideoCameraFilled />
       </el-icon>
-      <div>720全景</div>
+      <div>视频接入</div>
     </div>
     <div class="content">
       <div>图层列表</div>
@@ -17,8 +17,6 @@
 </template>
 
 <script setup>
-// import shp from 'shpjs'
-
 import { useVueCesium } from 'vue-cesium'
 import useLayerList from '../useLayerList.js'
 
@@ -80,7 +78,7 @@ async function createGraphicLayer(fileName) {
         scale: 1,
       },
     },
-    popup: '<div><iframe height="200" eidth="300" src=""></iframe><div>',
+    popup: '<div><video src="https://live.ifly360.com/live/d36635ef.flv"></video><div>',
   })
 
   return graphicLayer
@@ -95,7 +93,7 @@ async function createGraphicLayer(fileName) {
 </style>
 
 <style lang="scss" scoped>
-.photo-wrap {
+.video-wrap {
   left: 250px;
   top: 80px;
   width: 200px;

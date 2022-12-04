@@ -32,6 +32,8 @@
     <traval-info v-show="active === 'overview'" :active="active === 'overview'"></traval-info>
 
     <photo v-if="active === '720'" />
+
+    <video-monitor v-if="active === 'videoMonitor'"></video-monitor>
   </div>
 </template>
 

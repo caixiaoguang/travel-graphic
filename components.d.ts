@@ -36,13 +36,10 @@ declare module '@vue/runtime-core' {
     Province: typeof import('./src/components/commonLayer/Province.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TerrainClip: typeof import('./src/components/TerrainClip.vue')['default']
     ThreeSimulation: typeof import('./src/components/3DSimulation/ThreeSimulation.vue')['default']
-    Tileset: typeof import('./src/components/3DSimulation/Tileset.vue')['default']
-    TilesetLocationChange: typeof import('./src/components/3DSimulation/TilesetLocationChange.vue')['default']
     TravalInfo: typeof import('./src/components/travalInfo/TravalInfo.vue')['default']
-  }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
+    Video: typeof import('./src/components/video/Video.vue')['default']
+    VideoCamera: typeof import('./src/components/video/VideoCamera.vue')['default']
+    VideoMonitor: typeof import('./src/components/video/VideoMonitor.vue')['default']
   }
 }

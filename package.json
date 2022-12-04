@@ -20,6 +20,7 @@
     "nprogress": "^0.2.0",
     "pinia": "^2.0.23",
     "sass": "^1.55.0",
+    "shpjs": "^4.0.4",
     "vue": "^3.2.41",
     "vue-cesium": "^3.1.0",
     "vue-color-kit": "^1.0.5",

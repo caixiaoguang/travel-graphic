@@ -11,7 +11,6 @@ import 'vue-cesium/dist/index.css'
 import 'element-plus/theme-chalk/index.css'
 import './styles/main.scss'
 import './styles/element.scss'
-import './styles/index.css'
 
 const app = createApp(App)
 
