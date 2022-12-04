@@ -5,13 +5,14 @@
         <el-icon>
           <Component :is="item.icon" />
         </el-icon>
-        <div class="text">{{ item.title }}</div>
+
+        <span class="text">{{ item.title }}</span>
       </div>
       <div :class="['diamond-btn', { active: commonLayerActive }]" @click="commonLayerActive = !commonLayerActive">
         <el-icon>
           <Operation />
         </el-icon>
-        基础图层
+        <span class="text">基础图层</span>
       </div>
     </div>
     <div class="title">旅游地理图谱信息系统</div>
@@ -20,15 +21,17 @@
         <el-icon>
           <Component :is="item.icon" />
         </el-icon>
-        <div class="text">{{ item.title }}</div>
+        <span class="text">{{ item.title }}</span>
       </div>
     </div>
 
     <common-layer v-show="commonLayerActive"></common-layer>
 
-    <three-simulation v-show="active === '3DSimulation'" :active="active === '3DSimulation'"></three-simulation>
+    <three-simulation v-if="active === '3DSimulation'"></three-simulation>
 
     <traval-info v-show="active === 'overview'" :active="active === 'overview'"></traval-info>
+
+    <photo v-if="active === '720'" />
   </div>
 </template>
 
@@ -104,11 +107,10 @@ function handleClick(item) {
   }
 
   .diamond-btn {
-    font-size: 16px;
+    font-size: 14px;
     height: 40px;
-    margin: 0px 20px;
-    padding: 0px 25px;
     display: flex;
+    margin: 0 10px;
     cursor: pointer;
     align-items: center;
     justify-content: center;
@@ -122,8 +124,13 @@ function handleClick(item) {
     &.active {
       background-image: url('/img/btn-bg-active.png');
     }
+
     .el-icon {
-      margin-right: 5px;
+      margin: 0 5px 0 15px;
+    }
+    .text {
+      margin: 0 15px 0 0px;
+      white-space: nowrap;
     }
   }
 }

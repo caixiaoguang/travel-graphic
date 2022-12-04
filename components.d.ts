@@ -14,19 +14,24 @@ declare module '@vue/runtime-core' {
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxButton: typeof import('element-plus/es')['ElCheckboxButton']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
+    ElCol: typeof import('element-plus/es')['ElCol']
+    ElDivider: typeof import('element-plus/es')['ElDivider']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
+    ElRow: typeof import('element-plus/es')['ElRow']
     ElSlider: typeof import('element-plus/es')['ElSlider']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
+    FloodAnalysis: typeof import('./src/components/3DSimulation/FloodAnalysis.vue')['default']
     FocusProvince: typeof import('./src/components/travalInfo/FocusProvince.vue')['default']
     HeadTitle: typeof import('./src/components/HeadTitle.vue')['default']
     OverView: typeof import('./src/components/travalInfo/OverView.vue')['default']
+    Photo: typeof import('./src/components/photo/Photo.vue')['default']
     Polyline: typeof import('./src/components/commonLayer/Polyline.vue')['default']
     Province: typeof import('./src/components/commonLayer/Province.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -36,5 +41,8 @@ declare module '@vue/runtime-core' {
     Tileset: typeof import('./src/components/3DSimulation/Tileset.vue')['default']
     TilesetLocationChange: typeof import('./src/components/3DSimulation/TilesetLocationChange.vue')['default']
     TravalInfo: typeof import('./src/components/travalInfo/TravalInfo.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

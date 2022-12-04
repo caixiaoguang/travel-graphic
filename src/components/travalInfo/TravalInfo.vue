@@ -9,16 +9,16 @@
     <div class="content">
       <el-form label-position="top">
         <el-form-item>
-          <el-checkbox-group v-model="travalList" size="large">
-            <el-checkbox-button label="overview">概况</el-checkbox-button>
-            <el-checkbox-button label="youshidu">优势度</el-checkbox-button>
-            <el-checkbox-button label="province">重点县</el-checkbox-button>
+          <el-checkbox-group v-model="travalList">
+            <el-checkbox label="overview">概况</el-checkbox>
+            <el-checkbox label="youshidu">优势度</el-checkbox>
+            <el-checkbox label="province">重点县</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
       </el-form>
     </div>
 
-    <over-view :active="travalList.includes('overview') && active" />
+    <over-view v-if="travalList.includes('overview') && active" />
 
     <cylinder-you-shi :active="travalList.includes('youshidu') && active"></cylinder-you-shi>
 

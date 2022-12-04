@@ -1,0 +1,10 @@
+{
+  "3dtiles": [
+    { "fileName": "xingyi", "label": "兴义" },
+    { "fileName": "xingyi1", "label": "兴义2" }
+  ],
+  "720": [
+    { "fileName": "xingyi", "label": "72011" },
+    { "fileName": "xingyi1", "label": "720兴义2" }
+  ]
+}

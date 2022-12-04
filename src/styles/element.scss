@@ -12,9 +12,13 @@
     --el-bg-color-overlay:#142f49dc;
   }
 
+
   .el-slider__button{
     background-color:var(--el-color-primary);
   }
   .el-popover.el-popper,.el-popover__title{
     color: var(--el-color-primary);
+  }
+  .el-divider--horizontal{
+    margin: 10px 0;;
   }

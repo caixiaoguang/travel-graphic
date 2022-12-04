@@ -7,83 +7,73 @@
       <div>三维模拟</div>
     </div>
     <div class="content">
-      <el-form label-position="top">
-        <el-form-item label="图层列表">
-          <div class="layer-item" v-for="item in layerList" :key="item.fileName">
-            <el-checkbox @change="(val) => handleLayerChange(val, item.fileName)">{{ item.label || item.fileName }}</el-checkbox>
+      <div>图层列表</div>
+      <div class="layer-item" v-for="item in layerList" :key="item.fileName">
+        <el-checkbox @change="(val) => handleLayerChange(val, item.fileName)">{{ item.label || item.fileName }}</el-checkbox>
 
-            <vc-primitive-tileset
-              v-if="selectedLayerList.includes(item.fileName)"
-              :url="`${baseUrl + item.fileName}/tileset.json`"
-              @readyPromise="(tileset, viewer) => onTilesetReady(tileset, viewer, item.fileName)"
-            ></vc-primitive-tileset>
+        <vc-primitive-tileset
+          v-if="selectedLayerList.includes(item.fileName)"
+          :url="`${baseUrl + item.fileName}/tileset.json`"
+          @readyPromise="(tileset, viewer) => onTilesetReady(tileset, viewer, item.fileName)"
+        ></vc-primitive-tileset>
 
-            <el-popover ref="popover" placement="right" trigger="click" title="调整位置" :width="200">
-              <template #reference>
-                <el-icon><Edit /></el-icon>
-              </template>
-              <div class="slider-wrap">
-                <span class="slider-name">经度：</span>
-                <el-slider v-model="locationObj[item.fileName].longitude" :step="0.000001" :min="103" :max="109" @change="changeLocation(item.fileName)"></el-slider>
-                <span class="slider-name">纬度：</span>
-                <el-slider v-model="locationObj[item.fileName].latitude" :step="0.000001" :min="24" :max="30" @change="changeLocation(item.fileName)"></el-slider>
-                <span class="slider-name">高度：</span>
-                <el-slider v-model="locationObj[item.fileName].height" :step="0.5" :min="-100" :max="100" @change="changeLocation(item.fileName)"></el-slider>
-              </div>
-            </el-popover>
-
-            <el-icon @click="changeLocation(item.fileName)"><LocationFilled /></el-icon>
-            <el-icon @click="changeLocation(item.fileName, true)"><RefreshLeft /></el-icon>
+        <el-popover ref="popover" placement="right" trigger="click" title="调整位置" :width="200">
+          <template #reference>
+            <el-icon><Edit /></el-icon>
+          </template>
+          <div class="slider-wrap">
+            <span class="slider-name">经度：</span>
+            <el-slider v-model="locationObj[item.fileName].longitude" :step="0.000001" :min="103" :max="109" @change="changeLocation(item.fileName)"></el-slider>
+            <span class="slider-name">纬度：</span>
+            <el-slider v-model="locationObj[item.fileName].latitude" :step="0.000001" :min="24" :max="30" @change="changeLocation(item.fileName)"></el-slider>
+            <span class="slider-name">高度：</span>
+            <el-slider v-model="locationObj[item.fileName].height" :step="0.5" :min="-100" :max="100" @input="changeLocation(item.fileName)"></el-slider>
           </div>
-        </el-form-item>
-        <!-- 
+        </el-popover>
+
+        <el-icon @click="changeLocation(item.fileName)"><LocationFilled /></el-icon>
+        <el-icon @click="changeLocation(item.fileName, true)"><RefreshLeft /></el-icon>
+      </div>
+
+      <!-- 
         <el-form-item label="经度">
           <el-slider v-model="longitude" :step="0.01" :min="103" :max="109" @change="changeLocation"></el-slider>
         </el-form-item> -->
 
-        <el-form-item label="淹没分析">
-          <el-button size="small" @click="start">开始</el-button>
-          <el-button size="small">暂停</el-button>
-          <el-button size="small">结束</el-button>
-        </el-form-item>
+      <el-divider></el-divider>
 
-        <el-form-item label="卷帘对比">
-          <el-switch v-model="contrastDisplay"></el-switch>
-        </el-form-item>
-      </el-form>
+      <flood-analysis></flood-analysis>
+
+      <el-divider></el-divider>
+      <contrast-plane />
     </div>
-
-    <contrast-plane v-if="contrastDisplay" />
-
-    <!-- <vc-analysis-flood ref="flood" :min-height="-1" :max-height="4000" :speed="10" :polygon-hierarchy="polygonHierarchy"></vc-analysis-flood> -->
   </div>
 </template>
 
 <script setup>
 import { useVueCesium } from 'vue-cesium'
+import useLayerList from '../useLayerList.js'
 
 defineProps({ active: Boolean })
 
 const baseUrl = `${window.baseUrl}3dtiles/`
 
+const { layerList } = useLayerList()
+
 const selectedLayerList = ref([])
-const layerList = reactive([{ fileName: 'xingyi', label: '兴义' }])
 const tilesetObj = {}
+
 const locationObj = reactive({})
-layerList.forEach((el) => {
-  locationObj[el.fileName] = {}
+
+watchEffect(() => {
+  layerList.value.forEach((el) => {
+    locationObj[el.fileName] = {}
+  })
 })
 
 const flood = ref()
 
 const $vc = useVueCesium()
-
-const photo = ref(false)
-const single = ref(false)
-
-const contrastDisplay = ref(false)
-
-const polygonHierarchy = ref([])
 
 function handleLayerChange(isSelect, name) {
   if (isSelect) {
@@ -157,7 +147,10 @@ function start() {
 .three-wrap {
   left: 250px;
   top: 80px;
-  width: 200px;
+  width: 210px;
+  .content {
+    display: block;
+  }
   .title {
     margin-bottom: 10px;
   }

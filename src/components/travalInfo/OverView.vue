@@ -1,5 +1,5 @@
 <template>
-  <div class="analysis-panel overview-layer" v-show="active" element-loading-background="transparent">
+  <div class="analysis-panel overview-layer" element-loading-background="transparent">
     <div class="title">
       <el-icon>
         <PieChart />
@@ -48,11 +48,19 @@ onMounted(async () => {
 //   },
 // )
 
-watchEffect(() => {
-  console.log(props.active)
-  collection && (collection.show = props.active)
-  graphicLayer && (graphicLayer.show = props.active)
-})
+// watchEffect(() => {
+//   console.log(props.active)
+//   if (props.active && !handler) {
+//     bindClickEvent()
+//   }
+
+//   if (!props.active) {
+//     handler = null
+//   }
+
+//   collection && (collection.show = props.active)
+//   graphicLayer && (graphicLayer.show = props.active)
+// })
 
 onUnmounted(() => {
   if (graphicLayer) {
@@ -117,7 +125,7 @@ function addEntityPoint(data) {
     collection.entities.add(entity)
   }
   $vc.viewer.dataSources.add(collection)
-  collection.show = false
+  collection.show = true
 }
 
 function bindClickEvent() {
