@@ -38,6 +38,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     ThreeSimulation: typeof import('./src/components/3DSimulation/ThreeSimulation.vue')['default']
     TravalInfo: typeof import('./src/components/travalInfo/TravalInfo.vue')['default']
+    VectorLayer: typeof import('./src/components/commonLayer/VectorLayer.vue')['default']
     Video: typeof import('./src/components/video/Video.vue')['default']
     VideoCamera: typeof import('./src/components/video/VideoCamera.vue')['default']
     VideoMonitor: typeof import('./src/components/video/VideoMonitor.vue')['default']

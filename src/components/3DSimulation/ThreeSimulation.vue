@@ -35,11 +35,6 @@
         <el-icon @click="changeLocation(item.fileName, true)"><RefreshLeft /></el-icon>
       </div>
 
-      <!-- 
-        <el-form-item label="经度">
-          <el-slider v-model="longitude" :step="0.01" :min="103" :max="109" @change="changeLocation"></el-slider>
-        </el-form-item> -->
-
       <el-divider></el-divider>
 
       <flood-analysis></flood-analysis>
@@ -58,7 +53,7 @@ defineProps({ active: Boolean })
 
 const baseUrl = `${window.baseUrl}3dtiles/`
 
-const { layerList } = useLayerList()
+const { tilesetList: layerList } = useLayerList()
 
 const selectedLayerList = ref([])
 const tilesetObj = {}

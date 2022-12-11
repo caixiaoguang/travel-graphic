@@ -37,6 +37,8 @@
     <!-- <Polyline layerName="gzs_polyline" :active="district" /> -->
 
     <Province v-if="road" />
+
+    <vector-layer></vector-layer>
   </div>
 </template>
 

@@ -20,7 +20,7 @@ const $vc = useVueCesium()
 
 const contrastDisplay = ref(false)
 
-const { layerList } = useLayerList()
+const { tilesetList: layerList } = useLayerList()
 
 const selectedLayerList = ref([])
 

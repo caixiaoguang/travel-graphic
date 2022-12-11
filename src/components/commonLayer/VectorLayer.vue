@@ -1,17 +1,8 @@
 <template>
-  <div class="analysis-panel photo-wrap">
-    <div class="title">
-      <el-icon>
-        <HelpFilled />
-      </el-icon>
-      <div>720全景</div>
-    </div>
-    <div class="content">
-      <div>图层列表</div>
-      <div class="layer-item" v-for="item in photoList" :key="item.fileName">
-        <el-checkbox @change="(val) => handleLayerChange(val, item.fileName)">{{ item.label || item.fileName }}</el-checkbox>
-        <el-icon @click="changeLocation(item.fileName)"><LocationFilled /></el-icon>
-      </div>
+  <div class="vec-layer">
+    <div class="layer-item" v-for="item in layerList" :key="item.fileName">
+      <el-checkbox @change="(val) => handleLayerChange(val, item.fileName)">{{ item.label || item.fileName }}</el-checkbox>
+      <el-icon @click="changeLocation(item.fileName)"><LocationFilled /></el-icon>
     </div>
   </div>
 </template>
@@ -22,7 +13,7 @@ import useLayerList from '../useLayerList.js'
 
 defineProps({ active: Boolean })
 
-const { photoList } = useLayerList()
+const { vectorList: layerList } = useLayerList()
 let graphicGroupLayer
 
 const $vc = useVueCesium()
@@ -56,7 +47,7 @@ async function handleLayerChange(isSelect, name) {
   }
 }
 
-function changeLocation() {
+function changeLocation(name) {
   if (!graphicGroupLayer) return
   const layer = graphicGroupLayer.getLayer(name)
   if (layer) {
@@ -65,10 +56,18 @@ function changeLocation() {
 }
 
 async function createGraphicLayer(fileName) {
-  const url = `${window.location.origin + window.baseUrl}720/${fileName}/${fileName}`
+  const url = `${window.location.origin + window.baseUrl}vector/${fileName}/${fileName}`
   const geojson = await shp(url).catch((e) => {
     console.log(e)
   })
+
+  let popupStr = ''
+  const properties = geojson.features[0].properties
+
+  for (const key in properties) {
+    const value = properties[key]
+    popupStr += `<div>${key}：${value}</div>`
+  }
 
   const graphicLayer = new mars3d.layer.GeoJsonLayer({
     id: fileName,
@@ -76,19 +75,17 @@ async function createGraphicLayer(fileName) {
     flyTo: true,
     symbol: {
       styleOptions: {
-        image: `${window.baseUrl}img/photo.png`,
+        image: `${window.baseUrl}img/4a.png`,
         label: 'xxxxxxx',
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         height: 32,
-        width: 32,
+        width: 2,
         scale: 1,
+        opacity: 0.8,
+        color: '#7FFFFF',
       },
     },
-    popup: (e) => {
-      const url = e.graphic.attr['720address']
-      return `<div><iframe height="400" width="600" src="${url}"></iframe><div>`
-    },
-    popupOptions: { offsetY: -28 },
+    popup: popupStr,
   })
 
   return graphicLayer
@@ -103,23 +100,10 @@ async function createGraphicLayer(fileName) {
 </style>
 
 <style lang="scss" scoped>
-.photo-wrap {
-  left: 250px;
-  top: 80px;
-  width: 200px;
-  .content {
-    display: block;
-  }
-  .title {
-    margin-bottom: 10px;
-  }
-  .layer-item {
-    width: 100%;
-    .el-icon {
-      cursor: pointer;
-      margin-left: 10px;
-      font-size: 15px;
-    }
+.vec-layer {
+  .el-icon {
+    cursor: pointer;
+    margin-left: 10px;
   }
 }
 </style>

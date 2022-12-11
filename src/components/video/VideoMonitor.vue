@@ -8,7 +8,7 @@
     </div>
     <div class="content">
       <div>图层列表</div>
-      <div class="layer-item" v-for="item in photoList" :key="item.fileName">
+      <div class="layer-item" v-for="item in layerList" :key="item.fileName">
         <el-checkbox @change="(val) => handleLayerChange(val, item.fileName)">{{ item.label || item.fileName }}</el-checkbox>
         <el-icon @click="changeLocation(item.fileName)"><LocationFilled /></el-icon>
       </div>
@@ -22,7 +22,7 @@ import useLayerList from '../useLayerList.js'
 
 defineProps({ active: Boolean })
 
-const { photoList } = useLayerList()
+const { videoList: layerList } = useLayerList()
 let graphicGroupLayer
 
 const $vc = useVueCesium()
@@ -59,7 +59,7 @@ async function handleLayerChange(isSelect, name) {
 function changeLocation() {}
 
 async function createGraphicLayer(fileName) {
-  const url = `${window.location.origin + window.baseUrl}720/${fileName}/${fileName}`
+  const url = `${window.location.origin + window.baseUrl}video/${fileName}/${fileName}`
   const geojson = await shp(url).catch((e) => {
     console.log(e)
   })
@@ -70,7 +70,7 @@ async function createGraphicLayer(fileName) {
     flyTo: true,
     symbol: {
       styleOptions: {
-        image: `${window.baseUrl}img/4a.png`,
+        image: `${window.baseUrl}img/video.png`,
         label: 'xxxxxxx',
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         height: 32,
@@ -78,7 +78,12 @@ async function createGraphicLayer(fileName) {
         scale: 1,
       },
     },
-    popup: '<div><video src="https://live.ifly360.com/live/d36635ef.flv"></video><div>',
+    popup: (e) => {
+      const monitorURL = e.graphic.attr['monitorURL']
+      const nestURL = e.graphic.attr['nestURL']
+      return `<div class="video-iframe-wrap"><div><iframe height="400" width="350" src="${monitorURL}"></iframe></div><div><iframe height="400" width="350" src="${nestURL}"></iframe></div><div>`
+    },
+    popupOptions: { offsetY: -30 },
   })
 
   return graphicLayer
@@ -89,6 +94,9 @@ async function createGraphicLayer(fileName) {
 .el-slider__button {
   height: 15px !important;
   width: 15px !important;
+}
+.video-iframe-wrap {
+  display: flex;
 }
 </style>
 
