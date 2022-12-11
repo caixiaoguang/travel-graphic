@@ -31,7 +31,11 @@
       <vc-imagery-provider-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0" ref="provider" />
     </vc-layer-imagery>
     <vc-layer-imagery v-else>
-      <vc-imagery-provider-baidu ref="provider" mapStyle="midnight" :projection-transforms="{ from: 'BD09', to: 'WGS84' }" />
+      <!-- <vc-imagery-provider-baidu ref="provider" mapStyle="midnight" :projection-transforms="{ from: 'BD09', to: 'WGS84' }" /> -->
+      <vc-imagery-provider-urltemplate
+        ref="provider"
+        url="http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}"
+      ></vc-imagery-provider-urltemplate>
     </vc-layer-imagery>
 
     <!-- <Polyline layerName="gzs_polyline" :active="district" /> -->
