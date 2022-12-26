@@ -15,7 +15,7 @@
         <span class="text">基础图层</span>
       </div>
     </div>
-    <div class="title">旅游地理图谱信息系统</div>
+    <div class="title">三维虚拟可视化系统</div>
     <div class="menu right">
       <div :class="['diamond-btn', { active: active === item.index }]" v-for="item in rightMenu" :key="item.title" @click="handleClick(item)">
         <el-icon>

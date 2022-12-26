@@ -12,7 +12,6 @@ declare module '@vue/runtime-core' {
     CylinderYouShi: typeof import('./src/components/travalInfo/CylinderYouShi.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
-    ElCheckboxButton: typeof import('element-plus/es')['ElCheckboxButton']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElDivider: typeof import('element-plus/es')['ElDivider']
@@ -39,8 +38,6 @@ declare module '@vue/runtime-core' {
     ThreeSimulation: typeof import('./src/components/3DSimulation/ThreeSimulation.vue')['default']
     TravalInfo: typeof import('./src/components/travalInfo/TravalInfo.vue')['default']
     VectorLayer: typeof import('./src/components/commonLayer/VectorLayer.vue')['default']
-    Video: typeof import('./src/components/video/Video.vue')['default']
-    VideoCamera: typeof import('./src/components/video/VideoCamera.vue')['default']
     VideoMonitor: typeof import('./src/components/video/VideoMonitor.vue')['default']
   }
 }

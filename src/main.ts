@@ -25,6 +25,9 @@ app.use(router)
 app.use(VueCesium, {
   mars3dConfig: {
     include: 'mars3d',
+    // libs: {
+    //   mars3d: ['https://cdn.jsdelivr.net/npm/mars3d-cesium@1.96.8/Build/Cesium/index.min.js'],
+    // },
   },
 })
 

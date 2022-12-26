@@ -8,6 +8,7 @@
     <div class="title">右侧图层</div>
     <div v-for="item in layerList" :key="item.fileName">
       <el-checkbox @change="(val) => handleLayerChange(val, item.fileName)">{{ item.label || item.fileName }}</el-checkbox>
+      <el-icon @click="changeLocation(item.fileName)"><LocationFilled /></el-icon>
     </div>
   </div>
 </template>
@@ -22,9 +23,7 @@ const contrastDisplay = ref(false)
 
 const { tilesetList: layerList } = useLayerList()
 
-const selectedLayerList = ref([])
-
-let mapSplit
+let mapSplit, rightLayer
 
 onMounted(initSplitControl)
 
@@ -43,30 +42,34 @@ function handleSwitch(val) {
 function handleLayerChange(isSelect, name) {
   if (!mapSplit) return
 
-  if (isSelect) {
-    selectedLayerList.value.push(name)
-  } else {
-    selectedLayerList.value = selectedLayerList.value.filter((el) => el !== name)
-  }
+  const index = layerList.value.findIndex((el) => el.fileName === name)
 
-  const rightLayer = selectedLayerList.value.map((el) => ({ name: el, type: '3dtiles', url: `${window.baseUrl}3dtiles/${el}/tileset.json` }))
+  const layer = rightLayer[index]
 
-  mapSplit.setOptions({ rightLayer })
+  layer.show = isSelect
+}
+
+function changeLocation(name) {
+  if (!mapSplit) return
+
+  const index = layerList.value.findIndex((el) => el.fileName === name)
+
+  const layer = rightLayer[index]
+
+  layer.flyTo()
 }
 
 async function initSplitControl() {
   await $vc.creatingPromise
   mapSplit = new mars3d.control.MapSplit({
-    // leftLayer: [
-    //   // { name: '天地图卫星', type: 'tdt', layer: 'img_d' },
-    //   {
-    //     name: '大雁塔',
-    //     type: '3dtiles',
-    //     url: '//data.mars3d.cn/3dtiles/qx-dyt/tileset.json',
-    //     position: { alt: -27 },
-    //   },
-    // ],
     rightLayer: [],
+  })
+  watchEffect(() => {
+    rightLayer = layerList.value.map((el) => {
+      return new mars3d.layer.TilesetLayer({ name: el.fileName, type: '3dtiles', url: `${window.baseUrl}3dtiles/${el.fileName}/tileset.json`, show: false })
+    })
+
+    mapSplit.setOptions({ rightLayer })
   })
 }
 </script>
@@ -86,5 +89,9 @@ async function initSplitControl() {
   position: fixed;
   bottom: 10px;
   right: 10px;
+  .el-icon {
+    margin-left: 10px;
+    cursor: pointer;
+  }
 }
 </style>

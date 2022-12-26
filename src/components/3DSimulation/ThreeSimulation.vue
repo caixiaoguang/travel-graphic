@@ -33,6 +33,7 @@
 
         <el-icon @click="changeLocation(item.fileName)"><LocationFilled /></el-icon>
         <el-icon @click="changeLocation(item.fileName, true)"><RefreshLeft /></el-icon>
+        <el-icon @click="changeLocation(item.fileName, true)"><Flag /></el-icon>
       </div>
 
       <el-divider></el-divider>
