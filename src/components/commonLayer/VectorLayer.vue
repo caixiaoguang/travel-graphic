@@ -55,10 +55,19 @@ function changeLocation(name) {
   }
 }
 
+function getRandomColor() {
+  var letters = '0123456789ABCDEF'
+  var color = '#'
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)]
+  }
+  return color
+}
+
 async function createGraphicLayer(fileName) {
   const url = `${window.location.origin + window.baseUrl}vector/${fileName}/${fileName}`
   const geojson = await shp(url).catch((e) => {
-    console.log(e)
+    // console.log(e)
   })
 
   let popupStr = ''
@@ -73,16 +82,14 @@ async function createGraphicLayer(fileName) {
     id: fileName,
     data: geojson,
     flyTo: true,
+    center: { alt: 20 },
     symbol: {
       styleOptions: {
-        image: `${window.baseUrl}img/4a.png`,
-        label: 'xxxxxxx',
-        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-        height: 32,
-        width: 2,
-        scale: 1,
-        opacity: 0.8,
-        color: '#7FFFFF',
+        // verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+        opacity: 0.95,
+      },
+      callback: (attr) => {
+        return { color: getRandomColor() }
       },
     },
     popup: popupStr,

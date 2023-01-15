@@ -67,7 +67,7 @@ function changeLocation() {
 async function createGraphicLayer(fileName) {
   const url = `${window.location.origin + window.baseUrl}720/${fileName}/${fileName}`
   const geojson = await shp(url).catch((e) => {
-    console.log(e)
+    // console.log(e)
   })
 
   const graphicLayer = new mars3d.layer.GeoJsonLayer({
@@ -86,9 +86,9 @@ async function createGraphicLayer(fileName) {
     },
     popup: (e) => {
       const url = e.graphic.attr['720address']
-      return `<div><iframe height="400" width="600" src="${url}"></iframe><div>`
+      return `<div><iframe height="700" width="1300" src="${url}"></iframe><div>`
     },
-    popupOptions: { offsetY: -28 },
+    popupOptions: { offsetY: -28, maxWidth: 1600, maxHeight: 1200 },
   })
 
   return graphicLayer
