@@ -16,6 +16,7 @@
     "ant-design-vue": "^3.2.15",
     "cesium": "^1.98.1",
     "element-plus": "^2.2.19",
+    "flv.js": "^1.6.2",
     "geostats": "^2.0.0",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.23",

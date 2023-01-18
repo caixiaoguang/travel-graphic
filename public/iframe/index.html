@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <video controls id="videoElement"></video>
+    </div>
+</body>
+<script src="./flv.min.js"></script>
+<script>
+    window.onload = createFlvPlayer
+
+
+    function createFlvPlayer() {
+        if (flvjs.isSupported()) {
+            const videoElement = document.getElementById('videoElement')
+            const paramsObj = new URLSearchParams(window.location.search)
+            const videoUrl = paramsObj.get('videoUrl')
+            const width = paramsObj.get('width')
+            videoElement.style.width = width + 'px'
+
+
+            const flvPlayer = flvjs.createPlayer({
+                type: 'flv',
+                isLive: true,
+                url: videoUrl
+            })
+
+            flvPlayer.attachMediaElement(videoElement)
+            flvPlayer.load()
+            flvPlayer.play()
+        }
+    }
+</script>
+
+</html>

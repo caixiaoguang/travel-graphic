@@ -56,7 +56,7 @@ function onViewerReady(readyObj: VcReadyObject) {
   viewer.selectedEntity = undefined
 
   viewer.camera.setView({
-    destination: Cesium.Cartesian3.fromDegrees(106.69, 26.336, 5000),
+    destination: Cesium.Cartesian3.fromDegrees(106.69, 26.336, 848870),
   })
   viewer.scene.globe.depthTestAgainstTerrain = true
 }
