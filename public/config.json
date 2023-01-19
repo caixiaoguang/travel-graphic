@@ -12,7 +12,7 @@
     { "fileName": "POINT", "label": "POINT" }
   ],
   "video": [
-    { "fileName": "xingyi", "label": "72011" },
-    { "fileName": "720全景", "label": "POINT" }
-  ]
+    { "fileName": "视频监控", "label": "" }
+  ],
+  "terrain":""
 }

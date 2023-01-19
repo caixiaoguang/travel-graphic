@@ -2,7 +2,7 @@
   <div class="home">
     <!-- <div class="baselayer-control"></div> -->
     <vc-config-provider>
-      <vc-viewer :show-credit="false" :info-box="false" fullscreen-button @ready="onViewerReady">
+      <vc-viewer :show-credit="false" :info-box="false" :terrainProvider="terrainProvider" fullscreen-button @ready="onViewerReady">
         <head-title @changeLayerType="changeLayerType" />
 
         <vc-ajax-bar color="red" size="4px" positioning="fixed"></vc-ajax-bar>
@@ -17,7 +17,7 @@
           }"
         />
 
-        <vc-terrain-provider-cesium></vc-terrain-provider-cesium>
+        <vc-terrain-provider-cesium v-if="!terrainUrl"></vc-terrain-provider-cesium>
 
         <!-- <vc-terrain-provider-tianditu ref="provider" token="436ce7e50d27eede2f2929307e6b33c0"></vc-terrain-provider-tianditu> -->
 
@@ -43,6 +43,11 @@
 
 <script setup lang="ts">
 import type { VcReadyObject } from 'vue-cesium/es/utils/types'
+import useLayerList from './components/useLayerList.js'
+
+const { terrainUrl } = useLayerList()
+
+const terrainProvider = ref()
 
 const ready = ref(false)
 const layerType = ref('travel')
@@ -54,6 +59,10 @@ function onViewerReady(readyObj: VcReadyObject) {
   window.$map = map
   // ready.value = true
   viewer.selectedEntity = undefined
+
+  if (terrainUrl.value) {
+    terrainProvider.value = new Cesium.CesiumTerrainProvider({ url: terrainUrl.value })
+  }
 
   viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(106.69, 26.336, 848870),
