@@ -54,8 +54,8 @@ const $vc = useVueCesium()
 
 const show = ref(true)
 
-// const baseMap = ref('nightMap')
-const baseMap = ref('satellite')
+const baseMap = ref('nightMap')
+// const baseMap = ref('satellite')
 const rain = ref(false)
 const snow = ref(false)
 const district = ref(false)

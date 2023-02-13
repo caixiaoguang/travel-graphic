@@ -28,7 +28,7 @@ export default {
       //   },
       //   // popup: "{NAME}",
       // })
-      fetch('/static/高速.json').then((res) => {
+      fetch(`${window.baseUrl}static/高速.json`).then((res) => {
         res.json().then((res) => {
           // 创建矢量数据图层
           this.graphicLayer = new mars3d.layer.GraphicLayer()

@@ -75,7 +75,7 @@ function addGeojsonLayer() {
 
   const layer = new mars3d.layer.GeoJsonLayer({
     name: props.layerName,
-    url: `/static/${props.layerName}.json`,
+    url: `${window.baseUrl}static/${props.layerName}.json`,
     symbol: {
       styleOptions: {
         // outline: true,

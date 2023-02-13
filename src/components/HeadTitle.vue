@@ -51,7 +51,7 @@ const commonLayerActive = ref(true)
 const threeSimulationTab = ref(true)
 
 const leftMenu = [
-  { title: '旅游概况', index: 'overview', icon: 'Promotion' },
+  // { title: '旅游概况', index: 'overview', icon: 'Promotion' },
   // { title: '三维模拟', index: '3DSimulation', icon: 'Grid' },
 ]
 const rightMenu = [
