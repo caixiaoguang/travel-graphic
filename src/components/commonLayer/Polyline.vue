@@ -55,6 +55,7 @@ function addGraphics(dataSource) {
       positions: feature.polyline.positions._value,
       style: {
         width: 6,
+        clampToGround: true,
         material: mars3d.MaterialUtil.createMaterial(mars3d.MaterialType.LineFlow, {
           image: `${window.baseUrl}/img/LinkPulse.png`,
           color: Cesium.Color.CORAL,

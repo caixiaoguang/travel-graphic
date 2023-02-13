@@ -34,7 +34,7 @@ const travalList = ref([])
 <style lang="scss" scoped>
 .traval-layer {
   //   position: fixed;
-  left: 250px;
+  left: 485px;
   top: 80px;
   .title {
     margin-bottom: 10px;

@@ -82,11 +82,10 @@ async function createGraphicLayer(fileName) {
     id: fileName,
     data: geojson,
     flyTo: true,
-    center: { alt: 20 },
     symbol: {
       styleOptions: {
-        // verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         opacity: 0.95,
+        clampToGround: true,
       },
       callback: (attr) => {
         return { color: getRandomColor() }

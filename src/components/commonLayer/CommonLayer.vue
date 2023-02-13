@@ -38,7 +38,7 @@
       ></vc-imagery-provider-urltemplate>
     </vc-layer-imagery>
 
-    <!-- <Polyline layerName="gzs_polyline" :active="district" /> -->
+    <Polyline layerName="gzs_polyline" :active="district" />
 
     <Province v-if="road" />
 
@@ -54,7 +54,8 @@ const $vc = useVueCesium()
 
 const show = ref(true)
 
-const baseMap = ref('nightMap')
+// const baseMap = ref('nightMap')
+const baseMap = ref('satellite')
 const rain = ref(false)
 const snow = ref(false)
 const district = ref(false)

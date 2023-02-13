@@ -76,6 +76,7 @@ async function createGraphicLayer(fileName) {
         height: 32,
         width: 32,
         scale: 1,
+        clampToGround: true,
       },
     },
     popup: (e) => {
@@ -86,7 +87,7 @@ async function createGraphicLayer(fileName) {
     },
     popupOptions: { offsetY: -30, maxWidth: 1600, maxHeight: 1200 },
   })
-window.baseUrl
+  window.baseUrl
   return graphicLayer
 }
 </script>
@@ -103,7 +104,7 @@ window.baseUrl
 
 <style lang="scss" scoped>
 .video-wrap {
-  left: 250px;
+  left: 485px;
   top: 80px;
   width: 200px;
   .content {

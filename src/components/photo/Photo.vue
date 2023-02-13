@@ -78,10 +78,10 @@ async function createGraphicLayer(fileName) {
       styleOptions: {
         image: `${window.baseUrl}img/photo.png`,
         label: 'xxxxxxx',
-        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         height: 32,
         width: 32,
         scale: 1,
+        clampToGround: true,
       },
     },
     popup: (e) => {
@@ -104,7 +104,7 @@ async function createGraphicLayer(fileName) {
 
 <style lang="scss" scoped>
 .photo-wrap {
-  left: 250px;
+  left: 485px;
   top: 80px;
   width: 200px;
   .content {

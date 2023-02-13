@@ -1,13 +1,20 @@
 <template>
   <div class="head-bar">
     <div class="menu left">
-      <div :class="['diamond-btn', { active: active === item.index }]" v-for="item in leftMenu" :key="item.title" @click="handleClick(item)">
+      <div :class="['diamond-btn', { active: activeTab === item.index }]" v-for="item in leftMenu" :key="item.title" @click="handleClick(item)">
         <el-icon>
           <Component :is="item.icon" />
         </el-icon>
-
         <span class="text">{{ item.title }}</span>
       </div>
+
+      <div :class="['diamond-btn', { active: threeSimulationTab }]" @click="threeSimulationTab = !threeSimulationTab">
+        <el-icon>
+          <Grid />
+        </el-icon>
+        <span class="text">三维模拟</span>
+      </div>
+
       <div :class="['diamond-btn', { active: commonLayerActive }]" @click="commonLayerActive = !commonLayerActive">
         <el-icon>
           <Operation />
@@ -17,7 +24,7 @@
     </div>
     <div class="title">三维虚拟可视化系统</div>
     <div class="menu right">
-      <div :class="['diamond-btn', { active: active === item.index }]" v-for="item in rightMenu" :key="item.title" @click="handleClick(item)">
+      <div :class="['diamond-btn', { active: activeTab === item.index }]" v-for="item in rightMenu" :key="item.title" @click="handleClick(item)">
         <el-icon>
           <Component :is="item.icon" />
         </el-icon>
@@ -27,22 +34,25 @@
 
     <common-layer v-show="commonLayerActive"></common-layer>
 
-    <three-simulation v-if="active === '3DSimulation'"></three-simulation>
+    <three-simulation v-if="threeSimulationTab"></three-simulation>
 
-    <traval-info v-show="active === 'overview'" :active="active === 'overview'"></traval-info>
+    <traval-info v-show="activeTab === 'overview'" :active="activeTab === 'overview'"></traval-info>
 
-    <photo v-if="active === '720'" />
+    <photo v-if="activeTab === '720'" />
 
-    <video-monitor v-if="active === 'videoMonitor'"></video-monitor>
+    <video-monitor v-if="activeTab === 'videoMonitor'"></video-monitor>
   </div>
 </template>
 
 <script setup lang="ts">
-const active = ref('')
+const activeTab = ref('')
 const commonLayerActive = ref(true)
+
+const threeSimulationTab = ref(true)
+
 const leftMenu = [
-  // { title: '旅游概况', index: 'overview', icon: 'Promotion' },
-  { title: '三维模拟', index: '3DSimulation', icon: 'Grid' },
+  { title: '旅游概况', index: 'overview', icon: 'Promotion' },
+  // { title: '三维模拟', index: '3DSimulation', icon: 'Grid' },
 ]
 const rightMenu = [
   { title: '720全景', index: '720', icon: 'HelpFilled' },
@@ -50,10 +60,10 @@ const rightMenu = [
 ]
 
 function handleClick(item) {
-  if (active.value === item.index) {
-    active.value = ''
+  if (activeTab.value === item.index) {
+    activeTab.value = ''
   } else {
-    active.value = item.index
+    activeTab.value = item.index
   }
 }
 </script>
