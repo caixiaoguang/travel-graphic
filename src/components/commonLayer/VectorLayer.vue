@@ -1,8 +1,11 @@
 <template>
   <div class="vec-layer">
     <div class="layer-item" v-for="item in layerList" :key="item.fileName">
-      <el-checkbox @change="(val) => handleLayerChange(val, item.fileName)">{{ item.label || item.fileName }}</el-checkbox>
-      <el-icon @click="changeLocation(item.fileName)"><LocationFilled /></el-icon>
+      <el-checkbox @change="(val) => handleLayerChange(val, item)">{{ item.label || item.fileName
+      }}</el-checkbox>
+      <el-icon @click="changeLocation(item.fileName)">
+        <LocationFilled />
+      </el-icon>
     </div>
   </div>
 </template>
@@ -30,16 +33,16 @@ async function init() {
   $map.addLayer(graphicGroupLayer)
 }
 
-async function handleLayerChange(isSelect, name) {
+async function handleLayerChange(isSelect, item) {
   if (!graphicGroupLayer) return
 
-  const layer = graphicGroupLayer.getLayer(name)
+  const layer = graphicGroupLayer.getLayer(item.fileName)
 
   if (isSelect) {
     if (layer) {
       layer.show = true
     } else {
-      const graphicLayer = await createGraphicLayer(name)
+      const graphicLayer = await createGraphicLayer(item)
       graphicGroupLayer.addLayer(graphicLayer)
     }
   } else {
@@ -64,8 +67,8 @@ function getRandomColor() {
   return color
 }
 
-async function createGraphicLayer(fileName) {
-  const url = `${window.location.origin + window.baseUrl}vector/${fileName}/${fileName}`
+async function createGraphicLayer(layer) {
+  const url = `${window.location.origin + window.baseUrl}vector/${layer.fileName}/${layer.fileName}`
   const geojson = await shp(url).catch((e) => {
     // console.log(e)
   })
@@ -79,12 +82,12 @@ async function createGraphicLayer(fileName) {
   }
 
   const graphicLayer = new mars3d.layer.GeoJsonLayer({
-    id: fileName,
+    id: layer.fileName,
     data: geojson,
     flyTo: true,
     symbol: {
       styleOptions: {
-        opacity: 0.95,
+        opacity: layer.opacity || 0.5,
         clampToGround: true,
       },
       callback: (attr) => {

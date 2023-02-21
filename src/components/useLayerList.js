@@ -1,10 +1,11 @@
-const tilesetList = ref([])
-const photoList = ref([])
-const vectorList = ref([])
-const videoList = ref([])
-const terrainUrl = ref('')
 
 function useLayerList() {
+  const tilesetList = ref([])
+  const photoList = ref([])
+  const vectorList = ref([])
+  const videoList = ref([])
+  const terrainUrl = ref('')
+  
   fetch(`${window.baseUrl}config.json`)
     .then((res) => res.json())
     .then((res) => {
@@ -15,7 +16,7 @@ function useLayerList() {
       terrainUrl.value = res['terrain']
     })
 
-  return { photoList, tilesetList, vectorList, videoList ,terrainUrl}
+  return { photoList, tilesetList, vectorList, videoList, terrainUrl }
 }
 
 export default useLayerList

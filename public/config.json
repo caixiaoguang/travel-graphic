@@ -1,16 +1,41 @@
 {
   "vector": [
-    { "fileName": "分区", "label": "分区" },
-    { "fileName": "单体化", "label": "单体化" }
+    {
+      "fileName": "分区",
+      "label": "分区",
+      "opacity": "0.6"
+    },
+    {
+      "fileName": "单体化",
+      "label": "单体化"
+    }
   ],
   "3dtiles": [
-    { "fileName": "xingyi", "label": "兴义" },
-    { "fileName": "xingyi1", "label": "兴义2" }
+    {
+      "fileName": "xingyi",
+      "label": "兴义",
+      "path":"http://159.75.121.194/xingyi/tileset.json"
+    },
+    {
+      "fileName": "xingyi1",
+      "label": "兴义2"
+    }
   ],
   "720": [
-    { "fileName": "720全景", "label": "图层一" },
-    { "fileName": "POINT", "label": "POINT" }
+    {
+      "fileName": "720全景",
+      "label": "图层一"
+    },
+    {
+      "fileName": "POINT",
+      "label": "POINT"
+    }
   ],
-  "video": [{ "fileName": "视频监控", "label": "" }],
-  "terrain": ""
+  "video": [
+    {
+      "fileName": "视频监控",
+      "label": ""
+    }
+  ],
+  "terrain": "http://kxy.xungis.com:8262/"
 }

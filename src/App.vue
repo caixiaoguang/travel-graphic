@@ -62,9 +62,8 @@ function onViewerReady(readyObj: VcReadyObject) {
 
   if (terrainUrl.value) {
     terrainProvider.value = new Cesium.CesiumTerrainProvider({ url: terrainUrl.value })
-  }
-
-  fetch(`${window.baseUrl}terrain/layer.json`)
+  }else{
+    fetch(`${window.baseUrl}terrain/layer.json`)
     .then((res) => {
       if (res.ok) {
         terrainProvider.value = new Cesium.CesiumTerrainProvider({ url: `${window.baseUrl}terrain` })
@@ -73,6 +72,9 @@ function onViewerReady(readyObj: VcReadyObject) {
     .catch((err) => {
       console.log(err)
     })
+  }
+
+
 
   viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(106.69, 26.336, 848870),

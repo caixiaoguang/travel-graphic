@@ -68,6 +68,7 @@ async function createGraphicLayer(fileName) {
     id: fileName,
     data: geojson,
     flyTo: true,
+    graphicOptions: { clampToTileset: true },
     symbol: {
       styleOptions: {
         image: `${window.baseUrl}img/video.png`,

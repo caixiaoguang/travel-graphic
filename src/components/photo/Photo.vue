@@ -9,8 +9,11 @@
     <div class="content">
       <div>图层列表</div>
       <div class="layer-item" v-for="item in photoList" :key="item.fileName">
-        <el-checkbox @change="(val) => handleLayerChange(val, item.fileName)">{{ item.label || item.fileName }}</el-checkbox>
-        <el-icon @click="changeLocation(item.fileName)"><LocationFilled /></el-icon>
+        <el-checkbox @change="(val) => handleLayerChange(val, item.fileName)">{{ item.label || item.fileName
+        }}</el-checkbox>
+        <el-icon @click="changeLocation(item.fileName)">
+          <LocationFilled />
+        </el-icon>
       </div>
     </div>
   </div>
@@ -19,8 +22,6 @@
 <script setup>
 import { useVueCesium } from 'vue-cesium'
 import useLayerList from '../useLayerList.js'
-
-defineProps({ active: Boolean })
 
 const { photoList } = useLayerList()
 let graphicGroupLayer
@@ -70,10 +71,35 @@ async function createGraphicLayer(fileName) {
     // console.log(e)
   })
 
+  // const cartesians = []
+
+  // console.log(geojson);
+  // geojson.features.forEach(el => {
+  //   const cartesian3 = Cesium.Cartesian3.fromDegrees(...el.geometry.coordinates)
+  //   cartesians.push(cartesian3)
+  // })
+
+
+  // $map.scene
+  //   .clampToHeightMostDetailed(cartesians)
+  //   .then(function (clampedCartesians) {
+  //     for (let i = 0; i < cartesians.length; i++) {
+  //       viewer.entities.add({
+  //         position: clampedCartesians[i],
+  //         type: 'point',
+  //         ellipsoid: {
+  //           radii: new Cesium.Cartesian3(0.2, 0.2, 0.2),
+  //           material: Cesium.Color.RED,
+  //         },
+  //       });
+  //     }
+  //   })
+
   const graphicLayer = new mars3d.layer.GeoJsonLayer({
     id: fileName,
     data: geojson,
     flyTo: true,
+    graphicOptions: { clampToTileset: true },
     symbol: {
       styleOptions: {
         image: `${window.baseUrl}img/photo.png`,
@@ -107,19 +133,22 @@ async function createGraphicLayer(fileName) {
   left: 485px;
   top: 80px;
   width: 200px;
+
   .content {
     display: block;
   }
+
   .title {
     margin-bottom: 10px;
   }
+
   .layer-item {
     width: 100%;
+
     .el-icon {
       cursor: pointer;
       margin-left: 10px;
       font-size: 15px;
     }
   }
-}
-</style>
+}</style>
