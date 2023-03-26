@@ -84,9 +84,9 @@ async function createGraphicLayer(fileName) {
       const monitorURL = e.graphic.attr['monitorURL']
       const nestURL = e.graphic.attr['nestURL']
       // const nestURL = 'https://live.iflyer360.com/live/outecb8a44a.flv'
-      return `<div class="video-iframe-wrap"><div><iframe height="400" width="700" src="${window.baseUrl}iframe/index.html?url1=${monitorURL}&url2=${nestURL}&width=700"></iframe></div>`
+      return `<div class="video-iframe-wrap"><iframe height="450" width="700" src="${window.baseUrl}iframe/index.html?url1=${monitorURL}&url2=${nestURL}&width=700"></iframe></div>`
     },
-    popupOptions: { offsetY: -30, maxWidth: 1600, maxHeight: 1200 },
+    popupOptions: { offsetY: -30, maxHeight:800},
   })
   window.baseUrl
   return graphicLayer
@@ -99,11 +99,13 @@ async function createGraphicLayer(fileName) {
   width: 15px !important;
 }
 .video-iframe-wrap {
-  display: flex;
+  overflow: hidden;
 }
 </style>
 
 <style lang="scss" scoped>
+
+
 .video-wrap {
   left: 485px;
   top: 80px;

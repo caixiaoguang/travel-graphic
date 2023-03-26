@@ -89,6 +89,7 @@
 			const paramsObj = new URLSearchParams(window.location.search)
 			const videoUrl = paramsObj.get(url)
 			const width = paramsObj.get('width')
+			const height = paramsObj.get('height')
 			videoElement.style.width = width + 'px'
 
 			const flvPlayer = flvjs.createPlayer({
