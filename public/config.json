@@ -14,11 +14,12 @@
     {
       "fileName": "xingyi",
       "label": "兴义",
-      "path":"http://159.75.121.194/xingyi/tileset.json"
+      "path":"http://kxy.xungis.com:8431/lin-shi-gao-zha-chang/20221220/tileset.json"
     },
     {
       "fileName": "xingyi1",
-      "label": "兴义2"
+      "label": "兴义2",
+      "path":"http://kxy.xungis.com:8431/lin-shi-gao-zha-chang/20220306/tileset.json"
     }
   ],
   "720": [

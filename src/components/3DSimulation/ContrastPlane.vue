@@ -66,7 +66,8 @@ async function initSplitControl() {
   })
   watchEffect(() => {
     rightLayer = layerList.value.map((el) => {
-      return new mars3d.layer.TilesetLayer({ name: el.fileName, type: '3dtiles', url: `${window.baseUrl}3dtiles/${el.fileName}/tileset.json`, show: false })
+      const url = el.path&&el.path.includes('http')?el.path:`${window.baseUrl}3dtiles/${el.fileName}/tileset.json`
+      return new mars3d.layer.TilesetLayer({ name: el.fileName, type: '3dtiles', url, show: false })
     })
 
     mapSplit.setOptions({ rightLayer })

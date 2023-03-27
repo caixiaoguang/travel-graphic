@@ -105,7 +105,7 @@ function onTilesetReady(tileset, viewer, name) {
   // locationObj[name].height = cartographic.height
   locationObj[name].height = 0
 
-  changeLocation(name)
+  // changeLocation(name)
 }
 
 function changeLocation(name, reset = false) {
