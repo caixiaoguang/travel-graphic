@@ -93,12 +93,12 @@ async function initSplitControl() {
     left = leftLayer.value.map((item) => {
       const el = layerList.value.find((el) => el.fileName === item)
       const url = el.path && el.path.includes('http') ? el.path : `${window.baseUrl}3dtiles/${el.fileName}/tileset.json`
-      return new mars3d.layer.TilesetLayer({ name: el.fileName, type: '3dtiles', url,  })
+      return new mars3d.layer.TilesetLayer({ name: el.fileName, type: '3dtiles', url,position:{alt_offset	:el.height||0} })
     })
     right = rightLayer.value.map((item) => {
       const el = layerList.value.find((el) => el.fileName === item)
       const url = el.path && el.path.includes('http') ? el.path : `${window.baseUrl}3dtiles/${el.fileName}/tileset.json`
-      return new mars3d.layer.TilesetLayer({ name: el.fileName, type: '3dtiles', url,  })
+      return new mars3d.layer.TilesetLayer({ name: el.fileName, type: '3dtiles', url,position:{alt_offset	:el.height||0} })
     })
 
     mapSplit.setOptions({ leftLayer: left, rightLayer: right })

@@ -14,7 +14,7 @@
 
         <vc-primitive-tileset v-if="selectedLayerList.includes(item.fileName)"
           :url="item.path || `${baseUrl + item.fileName}/tileset.json`"
-          @readyPromise="(tileset, viewer) => onTilesetReady(tileset, viewer, item.fileName)"></vc-primitive-tileset>
+          @readyPromise="(tileset, viewer) => onTilesetReady(tileset, viewer, item.fileName,item.height)"></vc-primitive-tileset>
 
         <el-popover ref="popover" placement="right" trigger="click" title="调整位置" :width="200">
           <template #reference>
@@ -89,7 +89,7 @@ function handleLayerChange(isSelect, name) {
   }
 }
 
-function onTilesetReady(tileset, viewer, name) {
+function onTilesetReady(tileset, viewer, name,height) {
   tilesetObj[name] = tileset
   const cartographic = Cesium.Cartographic.fromCartesian(tileset.boundingSphere.center)
 
@@ -103,9 +103,9 @@ function onTilesetReady(tileset, viewer, name) {
   locationObj[name].latitude = latitude
   locationObj[name].surface = Cesium.Cartesian3.fromDegrees(longitude, latitude, 0)
   // locationObj[name].height = cartographic.height
-  locationObj[name].height = 0
+  locationObj[name].height = height||0
 
-  // changeLocation(name)
+  changeLocation(name)
 }
 
 function changeLocation(name, reset = false) {

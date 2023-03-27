@@ -14,12 +14,18 @@
     {
       "fileName": "xingyi",
       "label": "兴义",
-      "path":"http://kxy.xungis.com:8431/lin-shi-gao-zha-chang/20221220/tileset.json"
+      "path":"http://kxy.xungis.com:8431/lin-shi-gao-zha-chang/20221220/tileset.json",
+      "height":25.5
     },
     {
       "fileName": "xingyi1",
       "label": "兴义2",
       "path":"http://kxy.xungis.com:8431/lin-shi-gao-zha-chang/20220306/tileset.json"
+    },
+    {
+      "fileName": "xingyi3",
+      "label": "兴义3",
+      "path":"http://kxy.xungis.com:8431/hua-gong-yuan-qu/20220615/tileset.json"
     }
   ],
   "720": [
