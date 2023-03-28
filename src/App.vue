@@ -2,20 +2,18 @@
   <div class="home">
     <!-- <div class="baselayer-control"></div> -->
     <vc-config-provider>
-      <vc-viewer :show-credit="false" :info-box="false" :terrainProvider="terrainProvider" fullscreen-button @ready="onViewerReady">
+      <vc-viewer :show-credit="false" :info-box="false" :terrainProvider="terrainProvider" fullscreen-button
+        @ready="onViewerReady">
         <head-title @changeLayerType="changeLayerType" />
 
         <vc-ajax-bar color="red" size="4px" positioning="fixed"></vc-ajax-bar>
 
-        <vc-navigation
-          :offset="[10, 80]"
-          :otherOpts="{
-            position: 'bottom',
-            offset: [0, 25],
-            statusBarOpts: { background: 'rgba(0,0,0,.6)' },
-            distancelegendOpts: { background: 'rgba(0,0,0,.6)' },
-          }"
-        />
+        <vc-navigation :offset="[10, 80]" :otherOpts="{
+          position: 'bottom',
+          offset: [0, 25],
+          statusBarOpts: { background: 'rgba(0,0,0,.6)' },
+          distancelegendOpts: { background: 'rgba(0,0,0,.6)' },
+        }" />
 
         <vc-terrain-provider-cesium v-if="!terrainUrl"></vc-terrain-provider-cesium>
 
@@ -25,13 +23,8 @@
 
         <!-- <vc-provider-terrain-tianditu :token="token" /> -->
 
-        <vc-measurements
-          ref="measurementsRef"
-          position="top-right"
-          :measurements="['polyline', 'area', 'vertical']"
-          :mainFabOpts="{ color: 'rgba(0,0,0,.6)' }"
-          :offset="[360, 80]"
-        />
+        <vc-measurements ref="measurementsRef" position="top-right" :measurements="['polyline', 'area', 'vertical']"
+          :mainFabOpts="{ color: 'rgba(0,0,0,.6)' }" :offset="[360, 80]" />
 
         <!-- <terrain-clip /> -->
 
@@ -60,18 +53,53 @@ function onViewerReady(readyObj: VcReadyObject) {
   // ready.value = true
   viewer.selectedEntity = undefined
 
+  map.bindContextMenu([
+  {
+      text: "显示此处经纬度",
+      icon: `<svg class="iconsvg" aria-hidden="true">
+              <use xlink:href="#marsgis-qjsjdb"></use>
+            </svg>`, 
+      show: function (e) {
+        return Cesium.defined(e.cartesian)
+      },
+      callback: (e) => {
+        const mpt = mars3d.LngLatPoint.fromCartesian(e.cartesian)
+        alert(mpt.toString(), "位置信息")
+      }
+    },
+  {
+    text: "开启深度监测",
+    // icon: "", // 支持base64或url图片
+    show: function () {
+      return !map.scene.globe.depthTestAgainstTerrain
+    },
+    callback: (e) => {
+      map.scene.globe.depthTestAgainstTerrain = true
+    }
+  },
+    {
+      text: "关闭深度监测",
+      // icon: "fa fa-eye",
+      show: function () {
+        return map.scene.globe.depthTestAgainstTerrain
+      },
+      callback: (e) => {
+        map.scene.globe.depthTestAgainstTerrain = false
+      }
+    }])
+
   if (terrainUrl.value) {
     terrainProvider.value = new Cesium.CesiumTerrainProvider({ url: terrainUrl.value })
-  }else{
+  } else {
     fetch(`${window.baseUrl}terrain/layer.json`)
-    .then((res) => {
-      if (res.ok) {
-        terrainProvider.value = new Cesium.CesiumTerrainProvider({ url: `${window.baseUrl}terrain` })
-      }
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      .then((res) => {
+        if (res.ok) {
+          terrainProvider.value = new Cesium.CesiumTerrainProvider({ url: `${window.baseUrl}terrain` })
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
 
@@ -79,7 +107,7 @@ function onViewerReady(readyObj: VcReadyObject) {
   viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(106.69, 26.336, 848870),
   })
-  viewer.scene.globe.depthTestAgainstTerrain = true
+  // viewer.scene.globe.depthTestAgainstTerrain = true
 }
 
 // function viewerReady(e) {
@@ -104,9 +132,11 @@ function changeLayerType(type: string) {
 <style lang="scss" scoped>
 .home {
   height: calc(100vh + 25px);
+
   :deep(.vc-location-other-controls) {
     button {
       font-size: 0.8rem;
+
       .vc-section {
         width: 160px;
       }
