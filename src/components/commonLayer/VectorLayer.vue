@@ -1,8 +1,7 @@
 <template>
   <div class="vec-layer">
     <div class="layer-item" v-for="item in layerList" :key="item.fileName">
-      <el-checkbox @change="(val) => handleLayerChange(val, item)">{{ item.label || item.fileName
-      }}</el-checkbox>
+      <el-checkbox @change="(val) => handleLayerChange(val, item)">{{ item.label || item.fileName }}</el-checkbox>
       <el-icon @click="changeLocation(item.fileName)">
         <LocationFilled />
       </el-icon>
@@ -89,6 +88,18 @@ async function createGraphicLayer(layer) {
       styleOptions: {
         opacity: layer.opacity || 0.5,
         clampToGround: true,
+        label: {
+          text: `{${layer.field}}`, // 对应的属性名称
+          opacity: 1,
+          font_size: 16,
+          color: '#fff',
+          outline: false,
+          scaleByDistance: true,
+          scaleByDistance_far: 20000000,
+          scaleByDistance_farValue: 0.1,
+          scaleByDistance_near: 1000,
+          scaleByDistance_nearValue: 1,
+        },
       },
       callback: (attr) => {
         return { color: getRandomColor() }

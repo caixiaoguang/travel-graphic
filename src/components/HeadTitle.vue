@@ -22,7 +22,7 @@
         <span class="text">基础图层</span>
       </div>
     </div>
-    <div class="title">三维虚拟可视化系统</div>
+    <!-- <div class="title">三维虚拟可视化系统</div> -->
     <div class="menu right">
       <div :class="['diamond-btn', { active: activeTab === item.index }]" v-for="item in rightMenu" :key="item.title" @click="handleClick(item)">
         <el-icon>
@@ -51,7 +51,7 @@ const commonLayerActive = ref(true)
 const threeSimulationTab = ref(true)
 
 const leftMenu = [
-  // { title: '旅游概况', index: 'overview', icon: 'Promotion' },
+  { title: '旅游概况', index: 'overview', icon: 'Promotion' },
   // { title: '三维模拟', index: '3DSimulation', icon: 'Grid' },
 ]
 const rightMenu = [

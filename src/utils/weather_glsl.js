@@ -66,18 +66,17 @@ void main(void) {
 `
 
 export function createSnowStage() {
-    var snow = new Cesium.PostProcessStage({
-        name: 'czm_snow',
-        fragmentShader: Snow
-    });
-    return snow;
+  var snow = new Cesium.PostProcessStage({
+    name: 'czm_snow',
+    fragmentShader: Snow,
+  })
+  return snow
 }
 
 export function createRainStage() {
-    var rain = new Cesium.PostProcessStage({
-        name: 'czm_rain',
-        fragmentShader: Rain
-    });
-    return rain;
+  var rain = new Cesium.PostProcessStage({
+    name: 'czm_rain',
+    fragmentShader: Rain,
+  })
+  return rain
 }
-

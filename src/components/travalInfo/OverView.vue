@@ -29,7 +29,6 @@ const props = defineProps({ active: { type: Boolean, default: false } })
 
 const $vc = useVueCesium()
 
-const columns = ['旅游资源类型', '个数']
 let overviewData, collection, handler, graphicLayer
 
 const anaData = ref([])

@@ -2,20 +2,6 @@
 import { useVueCesium } from 'vue-cesium'
 const $vc = useVueCesium()
 
-const defaultLineStyle = {
-  outline: true,
-  outlineWidth: 2,
-  color: '#34c9ee83',
-}
-
-const defaultMaterialStyle = {
-  materialType: 'PolylineGlow',
-  glowPower: 0.06, //发光强度
-  width: 30, //线宽
-  color: '#34c9ee',
-  opacity: 0.9,
-}
-
 const props = defineProps({
   active: { type: Boolean, default: false },
   layerName: String,
@@ -24,21 +10,82 @@ const props = defineProps({
   lineStyle: {},
 })
 
-let graphicLayer
+let graphicLayer, geoJsonLayer
 
-onMounted(addLayer)
+onMounted(addDemoGraphics)
 
 watchEffect(() => {
   if (props.active) {
-    graphicLayer && (graphicLayer.show = true)
+    geoJsonLayer && (geoJsonLayer.show = true)
   } else {
-    graphicLayer && (graphicLayer.show = false)
+    geoJsonLayer && (geoJsonLayer.show = false)
   }
 })
 
 onUnmounted(() => {
   // graphicLayer && $map.removeLayer(graphicLayer)
 })
+
+async function addDemoGraphics() {
+  await $vc.creatingPromise
+  if (geoJsonLayer) return
+  geoJsonLayer = new mars3d.layer.GeoJsonLayer({
+    name: '安徽各市',
+    url: '//data.mars3d.cn/file/geojson/areas/520000_full.json',
+    symbol: {
+      type: 'polygon',
+      styleOptions: {
+        materialType: mars3d.MaterialType.PolyGradient, // 重要参数，指定材质
+        materialOptions: {
+          color: '#3388cc',
+          opacity: 0.8,
+          alphaPower: 1.3,
+        },
+        // 面中心点，显示文字的配置
+        label: {
+          text: '{name}', // 对应的属性名称
+          opacity: 1,
+          font_size: 22,
+          color: '#fff',
+          outline: false,
+          scaleByDistance: true,
+          scaleByDistance_far: 20000000,
+          scaleByDistance_farValue: 0.1,
+          scaleByDistance_near: 1000,
+          scaleByDistance_nearValue: 1,
+        },
+      },
+      callback: function (attr, styleOpt) {
+        const randomHeight = (attr.childrenNum || 1) * 100 // 测试的高度
+        return {
+          materialOptions: {
+            color: getColor(),
+          },
+          height: 0,
+          diffHeight: randomHeight,
+        }
+      },
+    },
+    popup: '{name}',
+  })
+  geoJsonLayer.show = props.active
+  $map.addLayer(geoJsonLayer)
+
+  // 绑定事件
+  geoJsonLayer.on(mars3d.EventType.load, function (event) {
+    console.log('数据加载完成', event)
+  })
+  geoJsonLayer.on(mars3d.EventType.click, function (event) {
+    console.log('单击了图层', event)
+  })
+}
+
+const arrColor = ['rgb(15,176,255)', 'rgb(18,76,154)', '#40C4E4', '#42B2BE', 'rgb(51,176,204)', '#8CB7E5', 'rgb(0,244,188)', '#139FF0']
+
+let index = 0
+function getColor() {
+  return arrColor[++index % arrColor.length]
+}
 
 async function addLayer() {
   await $vc.creatingPromise
@@ -68,114 +115,6 @@ function addGraphics(dataSource) {
     graphicLayer.addGraphic(primitive)
   })
 }
-
-function addGeojsonLayer() {
-  graphicLayer = new mars3d.layer.GraphicLayer()
-  $map.addLayer(graphicLayer)
-
-  const layer = new mars3d.layer.GeoJsonLayer({
-    name: props.layerName,
-    url: `${window.baseUrl}static/${props.layerName}.json`,
-    symbol: {
-      styleOptions: {
-        // outline: true,
-        // outlineWidth: 2,
-        // color: "#34c9ee83",
-        materialType: 'PolylineGlow',
-        glowPower: 0.06, //发光强度
-        width: 30, //线宽
-        color: '#34c9ee',
-        opacity: 0.9,
-        clampToGround: true,
-      },
-    },
-    onCreateGraphic: (data) => {
-      // console.log(data);
-    },
-  })
-  $map.addLayer(layer)
-  layer.show = false
-  graphicLayer.show = props.active
-}
-
-// export default {
-//   props: {
-//     active: false,
-//     layerName: '',
-//     hasMaterial: false,
-//     materialStyle: {},
-//     lineStyle: {},
-//   },
-//   created() {
-//     // addGeojsonLayer();
-//     addLayer()
-//   },
-//   watch: {
-//     active(newVal) {
-//       console.log('sss')
-//       graphicLayer && (graphicLayer.show = newVal)
-//     },
-//   },
-//   methods: {
-//     addLayer() {
-//       graphicLayer = new mars3d.layer.GraphicLayer()
-//       $map.addLayer(graphicLayer)
-//       Cesium.GeoJsonDataSource.load(`/static/${layerName}.json`).then((dataSource) => {
-//         addGraphics(dataSource)
-//       })
-//     },
-//     addGraphics(dataSource) {
-//       let positions = []
-//       dataSource.entities.values.forEach((feature) => {
-//         const primitive = new mars3d.graphic.PolylinePrimitive({
-//           positions: feature.polyline.positions._value,
-//           style: {
-//             width: 6,
-//             material: mars3d.MaterialUtil.createMaterial(mars3d.MaterialType.LineFlow, {
-//               image: require('../assets/img/LinkPulse.png'),
-//               color: Cesium.Color.CORAL,
-//               repeat: new Cesium.Cartesian2(10.0, 1.0),
-//               speed: 1,
-//             }),
-//           },
-//         })
-//         graphicLayer.show = active
-//         graphicLayer.addGraphic(primitive)
-//       })
-//     },
-//     addGeojsonLayer() {
-//       graphicLayer = new mars3d.layer.GraphicLayer()
-//       $map.addLayer(graphicLayer)
-
-//       const layer = new mars3d.layer.GeoJsonLayer({
-//         name: layerName,
-//         url: `${baseUrl}static/${layerName}.json`,
-//         symbol: {
-//           styleOptions: {
-//             // outline: true,
-//             // outlineWidth: 2,
-//             // color: "#34c9ee83",
-//             materialType: 'PolylineGlow',
-//             glowPower: 0.06, //发光强度
-//             width: 30, //线宽
-//             color: '#34c9ee',
-//             opacity: 0.9,
-//             clampToGround: true,
-//           },
-//         },
-//         onCreateGraphic: (data) => {
-//           // console.log(data);
-//         },
-//       })
-//       $map.addLayer(layer)
-//       layer.show = false
-//       graphicLayer.show = active
-//     },
-//   },
-//   beforeUnmount() {
-//     graphicLayer && $map.removeLayer(graphicLayer)
-//   },
-// }
 </script>
 
 <style></style>
