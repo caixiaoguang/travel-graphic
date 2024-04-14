@@ -34,7 +34,7 @@
       <!-- <vc-imagery-provider-baidu ref="provider" mapStyle="midnight" :projection-transforms="{ from: 'BD09', to: 'WGS84' }" /> -->
       <vc-imagery-provider-urltemplate
         ref="provider"
-        url="http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}"
+        url="https://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}"
       ></vc-imagery-provider-urltemplate>
     </vc-layer-imagery>
 
