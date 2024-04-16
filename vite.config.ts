@@ -10,7 +10,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/travel-graphic',
+  // base: '/travel-graphic',
   // define: {
   //   global: {},
   // },
