@@ -9,8 +9,7 @@
     <div class="content">
       <div>图层列表</div>
       <div class="layer-item" v-for="item in photoList" :key="item.fileName">
-        <el-checkbox @change="(val) => handleLayerChange(val, item.fileName)">{{ item.label || item.fileName
-        }}</el-checkbox>
+        <el-checkbox @change="(val) => handleLayerChange(val, item.fileName)">{{ item.label || item.fileName }}</el-checkbox>
         <el-icon @click="changeLocation(item.fileName)">
           <LocationFilled />
         </el-icon>
@@ -79,7 +78,6 @@ async function createGraphicLayer(fileName) {
   //   cartesians.push(cartesian3)
   // })
 
-
   // $map.scene
   //   .clampToHeightMostDetailed(cartesians)
   //   .then(function (clampedCartesians) {
@@ -94,6 +92,8 @@ async function createGraphicLayer(fileName) {
   //       });
   //     }
   //   })
+  const height = window.document.documentElement.clientHeight - 200
+  const width = window.document.documentElement.clientWidth - 400
 
   const graphicLayer = new mars3d.layer.GeoJsonLayer({
     id: fileName,
@@ -112,9 +112,10 @@ async function createGraphicLayer(fileName) {
     },
     popup: (e) => {
       const url = e.graphic.attr['720address']
-      return `<div><iframe height="700" width="1300" src="${url}"></iframe><div>`
+
+      return `<div><iframe height="${height}" width="${width}" src="${url}"></iframe><div>`
     },
-    popupOptions: { offsetY: -28, maxWidth: 1600, maxHeight: 1200 },
+    popupOptions: { maxWidth: width + 100, maxHeight: height + 40 },
   })
 
   return graphicLayer
@@ -151,4 +152,5 @@ async function createGraphicLayer(fileName) {
       font-size: 15px;
     }
   }
-}</style>
+}
+</style>

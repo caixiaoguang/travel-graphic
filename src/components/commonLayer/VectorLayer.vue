@@ -80,6 +80,9 @@ async function createGraphicLayer(layer) {
     popupStr += `<div>${key}：${value}</div>`
   }
 
+  const height = window.document.documentElement.clientHeight - 200
+  const width = window.document.documentElement.clientWidth - 400
+
   const graphicLayer = new mars3d.layer.GeoJsonLayer({
     id: layer.fileName,
     data: geojson,
@@ -105,7 +108,18 @@ async function createGraphicLayer(layer) {
         return { color: getRandomColor() }
       },
     },
-    popup: popupStr,
+    // popup: popupStr,
+    popup: (e) => {
+      const desc = e.graphic.attr['DESC']
+      const imgNameList = e.graphic.attr['IMG']?.split(',') || []
+      let imgStr = ''
+      imgNameList.forEach((el) => {
+        imgStr += `<img src="${window.location.origin + window.baseUrl}vector/${layer.fileName}/${el}" style="width:50%">`
+      })
+      const textImgStr = `<div style="width:500px;padding-top:10px">${desc}<div style="margin-top:10px">${imgStr}</div><div>`
+      return imgStr ? textImgStr : popupStr
+    },
+    popupOptions: { maxWidth: width + 100, maxHeight: height + 40 },
   })
 
   return graphicLayer
