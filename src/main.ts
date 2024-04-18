@@ -24,13 +24,15 @@ app.use(createPinia())
 app.use(router)
 app.use(VueCesium, {
   mars3dConfig: {
-    // include: 'mars3d',
+    include: 'mars3d',
     libs: {
       mars3d: [
         `${window.baseUrl}lib/Cesium/Widgets/widgets.css`,
         `${window.baseUrl}lib/Cesium/Cesium.js`,
         `${window.baseUrl}lib/mars3d/mars3d.css`,
         `${window.baseUrl}lib/mars3d/mars3d.js`,
+        // `${window.baseUrl}lib/mars3d/thirdParty/weiVectorTile/CesiumVectorTile.min.js`,
+        // `${window.baseUrl}lib/mars3d/thirdParty/weiVectorTile/WeiVectorTileLayer.js`,
       ],
     },
   },

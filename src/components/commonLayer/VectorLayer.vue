@@ -66,7 +66,35 @@ function getRandomColor() {
   return color
 }
 
+function loadScript(url) {
+  return new Promise(function (resolve, reject) {
+    var script = document.createElement('script')
+    script.src = url
+    script.onload = function () {
+      resolve(url)
+    }
+    script.onerror = function () {
+      reject(new Error('Failed to load script: ' + url))
+    }
+    document.head.appendChild(script)
+  })
+}
+
+function loadScripts(scriptUrls) {
+  var promises = []
+  scriptUrls.forEach(function (url) {
+    promises.push(loadScript(url))
+  })
+  return Promise.all(promises)
+}
+
 async function createGraphicLayer(layer) {
+  // await loadScripts([
+  //   '/lib/mars3d/thirdParty/weiVectorTile/CesiumVectorTile.js',
+  //   '/lib/mars3d/thirdParty/weiVectorTile/WeiVectorTileLayer.js',
+  //   'https://unpkg.com/@turf/turf@latest/turf.min.js',
+  // ])
+
   const url = `${window.location.origin + window.baseUrl}vector/${layer.fileName}/${layer.fileName}`
   const geojson = await shp(url).catch((e) => {
     // console.log(e)
@@ -82,6 +110,8 @@ async function createGraphicLayer(layer) {
 
   const height = window.document.documentElement.clientHeight - 200
   const width = window.document.documentElement.clientWidth - 400
+
+  console.log(mars3d.layer)
 
   const graphicLayer = new mars3d.layer.GeoJsonLayer({
     id: layer.fileName,
@@ -110,17 +140,58 @@ async function createGraphicLayer(layer) {
     },
     // popup: popupStr,
     popup: (e) => {
+      const title = e.graphic.attr[layer.field]
       const desc = e.graphic.attr['DESC']
       const imgNameList = e.graphic.attr['IMG']?.split(',') || []
       let imgStr = ''
       imgNameList.forEach((el) => {
         imgStr += `<img src="${window.location.origin + window.baseUrl}vector/${layer.fileName}/${el}" style="width:50%">`
       })
-      const textImgStr = `<div style="width:500px;padding-top:10px">${desc}<div style="margin-top:10px">${imgStr}</div><div>`
+      const textImgStr = `<div style="width:500px;"><h2 style="text-align:center">${title}</h2><p>${desc}</p>${imgStr}</div>`
       return imgStr ? textImgStr : popupStr
     },
     popupOptions: { maxWidth: width + 100, maxHeight: height + 40 },
   })
+
+  // const tileLayer = new mars3d.layer.WeiVectorTileLayer({
+  //   id: layer.fileName,
+  //   source: geojson,
+  //   removeDuplicate: false,
+  //   zIndex: 2,
+  //   encoding: 'utf-8',
+  //   defaultStyle: {
+  //     // 参考api文档的Cesium.VectorStyle类
+  //     tileCacheSize: 200,
+
+  //     fill: true, // 是否填充，仅面数据有效。
+  //     fillColor: 'rgba(255,255,255,0.01)',
+
+  //     outline: true, // 是否显示边，仅面数据有效。
+  //     outlineColor: 'rgba(209,204,226,1)',
+  //     // lineDash: [3, 10],
+  //     lineWidth: 2,
+
+  //     showMaker: false, // 点状的时候需要打开
+  //     // markerImage: "img/marker/lace-red.png",
+
+  //     showCenterLabel: false,
+  //     // showCenterLabel: true, // 是否显示文本，仅对线和面数据有效
+  //     // centerLabelPropertyName: "name",
+  //     // fontColor: "rgba(255,255,255,0.8)",
+  //     // fontSize: 16,
+  //     // fontFamily: "楷体",
+  //     // labelOffsetX: -10,
+  //     // labelOffsetY: -5
+  //   },
+  //   maximumLevel: 20,
+  //   minimumLevel: 1,
+  //   simplify: false,
+  //   allowPick: true, // 允许单击
+  //   // 以下为mars3d参数,API参考http://mars3d.cn/api/BaseTileLayer.html#.ConstructorOptions
+  //   maxLength: -1,
+  //   popup: 'all',
+  //   flyTo: true,
+  // })
 
   return graphicLayer
 }
