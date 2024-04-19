@@ -107,7 +107,9 @@ async function createGraphicLayer(layer) {
     // console.log(e)
   })
 
-  let popupStr = ''
+  let popupStr = '',
+    graphicLayer
+
   const properties = geojson.features[0].properties
 
   for (const key in properties) {
@@ -118,95 +120,99 @@ async function createGraphicLayer(layer) {
   const height = window.document.documentElement.clientHeight - 200
   const width = window.document.documentElement.clientWidth - 400
 
-  const graphicLayer = new mars3d.layer.GeoJsonLayer({
-    id: layer.fileName,
-    data: geojson,
-    flyTo: true,
-    symbol: {
-      styleOptions: {
-        opacity: layer.opacity || 0.5,
-        clampToGround: true,
-        label: {
-          text: `{${layer.field}}`, // 对应的属性名称
-          opacity: 1,
-          font_size: 16,
-          color: '#fff',
-          outline: false,
-          scaleByDistance: true,
-          scaleByDistance_far: 20000000,
-          scaleByDistance_farValue: 0.1,
-          scaleByDistance_near: 1000,
-          scaleByDistance_nearValue: 1,
+  if (layer.fileName === '水系') {
+    const colorDic = {}
+    graphicLayer = new mars3d.layer.WeiVectorTileLayer({
+      id: layer.fileName,
+      source: geojson,
+      removeDuplicate: false,
+      zIndex: 20,
+      // encoding: 'utf-8',
+      defaultStyle: {
+        // 参考api文档的Cesium.VectorStyle类
+        tileCacheSize: 200,
+        fill: true, // 是否填充，仅面数据有效。
+        fillColor: '#4aa196',
+        outline: true, // 是否显示边，仅面数据有效。
+        outlineColor: 'rgba(209,204,226,1)',
+        // lineDash: [3, 10],
+        lineWidth: 1,
+        showCenterLabel: true, // 是否显示文本，仅对线和面数据有效
+        centerLabelPropertyName: 'name',
+        fontColor: 'rgba(255,255,255,0.8)',
+        fontSize: 23,
+        labelOffsetX: -10,
+        labelOffsetY: -5,
+      },
+      styleFilter: function (feature, style, x, y, level) {
+        if (level < 6) {
+          style.fontSize = level * 2
+        } else {
+          style.fontSize = 23
+        }
+
+        if (feature?.properties[layer.field]) {
+          const name = feature.properties[layer.field]
+          if (!colorDic[name]) {
+            colorDic[name] = getRandomColor()
+          }
+          style.fillColor = colorDic[name]
+        }
+        return style
+      },
+      maximumLevel: 20,
+      minimumLevel: 1,
+      simplify: false,
+      allowPick: true, // 允许单击
+      maxLength: -1,
+      popup: 'all',
+      flyTo: true,
+    })
+  }
+
+  if (layer.fileName !== '水系') {
+    graphicLayer = new mars3d.layer.GeoJsonLayer({
+      id: layer.fileName,
+      data: geojson,
+      flyTo: true,
+      symbol: {
+        styleOptions: {
+          opacity: layer.opacity || 0.5,
+          clampToGround: true,
+          label: {
+            text: `{${layer.field}}`, // 对应的属性名称
+            opacity: 1,
+            font_size: 16,
+            color: '#fff',
+            outline: false,
+            scaleByDistance: true,
+            scaleByDistance_far: 20000000,
+            scaleByDistance_farValue: 0.1,
+            scaleByDistance_near: 1000,
+            scaleByDistance_nearValue: 1,
+          },
+        },
+        callback: (attr) => {
+          return { color: getRandomColor() }
         },
       },
-      callback: (attr) => {
-        return { color: getRandomColor() }
+      // popup: popupStr,
+      popup: (e) => {
+        const title = e.graphic.attr[layer.field]
+        const desc = e.graphic.attr['DESCR']
+        const imgNameList = e.graphic.attr['IMG']?.split(',') || []
+        let imgStr = ''
+        imgNameList.forEach((el) => {
+          imgStr += `<img src="${window.location.origin + window.baseUrl}vector/${layer.fileName}/${el}" style="width:50%">`
+        })
+        const textImgStr = `<div style="width:500px;"><h2 style="text-align:center">${title}</h2><p>${desc}</p>${imgStr}</div>`
+        return imgStr ? textImgStr : popupStr
       },
-    },
-    // popup: popupStr,
-    popup: (e) => {
-      const title = e.graphic.attr[layer.field]
-      const desc = e.graphic.attr['DESC']
-      const imgNameList = e.graphic.attr['IMG']?.split(',') || []
-      let imgStr = ''
-      imgNameList.forEach((el) => {
-        imgStr += `<img src="${window.location.origin + window.baseUrl}vector/${layer.fileName}/${el}" style="width:50%">`
-      })
-      const textImgStr = `<div style="width:500px;"><h2 style="text-align:center">${title}</h2><p>${desc}</p>${imgStr}</div>`
-      return imgStr ? textImgStr : popupStr
-    },
-    popupOptions: { maxWidth: width + 100, maxHeight: height + 40 },
-  })
+      popupOptions: { maxWidth: width + 100, maxHeight: height + 40 },
+    })
+  }
 
-  const colorDic = {}
-  const tileLayer = new mars3d.layer.WeiVectorTileLayer({
-    id: layer.fileName,
-    source: geojson,
-    removeDuplicate: false,
-    zIndex: 20,
-    // encoding: 'utf-8',
-    defaultStyle: {
-      // 参考api文档的Cesium.VectorStyle类
-      tileCacheSize: 200,
-      fill: true, // 是否填充，仅面数据有效。
-      fillColor: '#4aa196',
-      outline: true, // 是否显示边，仅面数据有效。
-      outlineColor: 'rgba(209,204,226,1)',
-      // lineDash: [3, 10],
-      lineWidth: 1,
-      showCenterLabel: true, // 是否显示文本，仅对线和面数据有效
-      centerLabelPropertyName: 'name',
-      fontColor: 'rgba(255,255,255,0.8)',
-      fontSize: 23,
-      labelOffsetX: -10,
-      labelOffsetY: -5,
-    },
-    styleFilter: function (feature, style, x, y, level) {
-      if (level < 6) {
-        style.fontSize = level * 2
-      } else {
-        style.fontSize = 23
-      }
-
-      if (feature?.properties[layer.field]) {
-        const name = feature.properties[layer.field]
-        if (!colorDic[name]) {
-          colorDic[name] = getRandomColor()
-        }
-        style.fillColor = colorDic[name]
-      }
-      return style
-    },
-    maximumLevel: 20,
-    minimumLevel: 1,
-    simplify: false,
-    allowPick: true, // 允许单击
-    maxLength: -1,
-    popup: 'all',
-    flyTo: true,
-  })
-
-  return layer.fileName === '水系' ? tileLayer : graphicLayer
+  return graphicLayer
 }
 </script>
 
