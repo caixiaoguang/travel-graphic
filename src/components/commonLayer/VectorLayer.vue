@@ -13,6 +13,8 @@
 import { useVueCesium } from 'vue-cesium'
 import useLayerList from '../useLayerList.js'
 
+// import  VectorTileImageryProvider from 'cesiumvectortile'
+
 defineProps({ active: Boolean })
 
 const { vectorList: layerList } = useLayerList()
@@ -29,6 +31,11 @@ onUnmounted(() => {
 async function init() {
   await $vc.creatingPromise
   graphicGroupLayer = new mars3d.layer.GraphicGroupLayer()
+  await loadScripts([
+    'https://unpkg.com/@turf/turf@latest/turf.min.js',
+    '/lib/mars3d/thirdParty/weiVectorTile/CesiumVectorTile.js',
+    '/lib/mars3d/thirdParty/weiVectorTile/WeiVectorTileLayer.js',
+  ])
   $map.addLayer(graphicGroupLayer)
 }
 
@@ -89,11 +96,11 @@ function loadScripts(scriptUrls) {
 }
 
 async function createGraphicLayer(layer) {
-  // await loadScripts([
-  //   '/lib/mars3d/thirdParty/weiVectorTile/CesiumVectorTile.js',
-  //   '/lib/mars3d/thirdParty/weiVectorTile/WeiVectorTileLayer.js',
-  //   'https://unpkg.com/@turf/turf@latest/turf.min.js',
-  // ])
+  await loadScripts([
+    // 'https://unpkg.com/@turf/turf@latest/turf.min.js',
+    '/lib/mars3d/thirdParty/weiVectorTile/CesiumVectorTile.js',
+    // '/lib/mars3d/thirdParty/weiVectorTile/WeiVectorTileLayer.js',
+  ])
 
   const url = `${window.location.origin + window.baseUrl}vector/${layer.fileName}/${layer.fileName}`
   const geojson = await shp(url).catch((e) => {
@@ -110,8 +117,6 @@ async function createGraphicLayer(layer) {
 
   const height = window.document.documentElement.clientHeight - 200
   const width = window.document.documentElement.clientWidth - 400
-
-  console.log(mars3d.layer)
 
   const graphicLayer = new mars3d.layer.GeoJsonLayer({
     id: layer.fileName,
@@ -153,47 +158,55 @@ async function createGraphicLayer(layer) {
     popupOptions: { maxWidth: width + 100, maxHeight: height + 40 },
   })
 
-  // const tileLayer = new mars3d.layer.WeiVectorTileLayer({
-  //   id: layer.fileName,
-  //   source: geojson,
-  //   removeDuplicate: false,
-  //   zIndex: 2,
-  //   encoding: 'utf-8',
-  //   defaultStyle: {
-  //     // 参考api文档的Cesium.VectorStyle类
-  //     tileCacheSize: 200,
+  const colorDic = {}
+  const tileLayer = new mars3d.layer.WeiVectorTileLayer({
+    id: layer.fileName,
+    source: geojson,
+    removeDuplicate: false,
+    zIndex: 20,
+    // encoding: 'utf-8',
+    defaultStyle: {
+      // 参考api文档的Cesium.VectorStyle类
+      tileCacheSize: 200,
+      fill: true, // 是否填充，仅面数据有效。
+      fillColor: '#4aa196',
+      outline: true, // 是否显示边，仅面数据有效。
+      outlineColor: 'rgba(209,204,226,1)',
+      // lineDash: [3, 10],
+      lineWidth: 1,
+      showCenterLabel: true, // 是否显示文本，仅对线和面数据有效
+      centerLabelPropertyName: 'name',
+      fontColor: 'rgba(255,255,255,0.8)',
+      fontSize: 23,
+      labelOffsetX: -10,
+      labelOffsetY: -5,
+    },
+    styleFilter: function (feature, style, x, y, level) {
+      if (level < 6) {
+        style.fontSize = level * 2
+      } else {
+        style.fontSize = 23
+      }
 
-  //     fill: true, // 是否填充，仅面数据有效。
-  //     fillColor: 'rgba(255,255,255,0.01)',
+      if (feature?.properties[layer.field]) {
+        const name = feature.properties[layer.field]
+        if (!colorDic[name]) {
+          colorDic[name] = getRandomColor()
+        }
+        style.fillColor = colorDic[name]
+      }
+      return style
+    },
+    maximumLevel: 20,
+    minimumLevel: 1,
+    simplify: false,
+    allowPick: true, // 允许单击
+    maxLength: -1,
+    popup: 'all',
+    flyTo: true,
+  })
 
-  //     outline: true, // 是否显示边，仅面数据有效。
-  //     outlineColor: 'rgba(209,204,226,1)',
-  //     // lineDash: [3, 10],
-  //     lineWidth: 2,
-
-  //     showMaker: false, // 点状的时候需要打开
-  //     // markerImage: "img/marker/lace-red.png",
-
-  //     showCenterLabel: false,
-  //     // showCenterLabel: true, // 是否显示文本，仅对线和面数据有效
-  //     // centerLabelPropertyName: "name",
-  //     // fontColor: "rgba(255,255,255,0.8)",
-  //     // fontSize: 16,
-  //     // fontFamily: "楷体",
-  //     // labelOffsetX: -10,
-  //     // labelOffsetY: -5
-  //   },
-  //   maximumLevel: 20,
-  //   minimumLevel: 1,
-  //   simplify: false,
-  //   allowPick: true, // 允许单击
-  //   // 以下为mars3d参数,API参考http://mars3d.cn/api/BaseTileLayer.html#.ConstructorOptions
-  //   maxLength: -1,
-  //   popup: 'all',
-  //   flyTo: true,
-  // })
-
-  return graphicLayer
+  return layer.fileName === '水系' ? tileLayer : graphicLayer
 }
 </script>
 
