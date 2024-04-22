@@ -96,11 +96,7 @@ function loadScripts(scriptUrls) {
 }
 
 async function createGraphicLayer(layer) {
-  await loadScripts([
-    // 'https://unpkg.com/@turf/turf@latest/turf.min.js',
-    '/lib/mars3d/thirdParty/weiVectorTile/CesiumVectorTile.js',
-    // '/lib/mars3d/thirdParty/weiVectorTile/WeiVectorTileLayer.js',
-  ])
+  await loadScripts(['/lib/mars3d/thirdParty/weiVectorTile/CesiumVectorTile.js'])
 
   const url = `${window.location.origin + window.baseUrl}vector/${layer.fileName}/${layer.fileName}`
   const geojson = await shp(url).catch((e) => {
@@ -199,13 +195,14 @@ async function createGraphicLayer(layer) {
       // popup: popupStr,
       popup: (e) => {
         const title = e.graphic.attr[layer.field]
-        const desc = e.graphic.attr['DESCR']
+        const descKey = e.graphic.attr['DESCR']
+        const desc = layerList.value.find((el) => el.fileName === layer.fileName).description
         const imgNameList = e.graphic.attr['IMG']?.split(',') || []
         let imgStr = ''
         imgNameList.forEach((el) => {
           imgStr += `<img src="${window.location.origin + window.baseUrl}vector/${layer.fileName}/${el}" style="width:50%">`
         })
-        const textImgStr = `<div style="width:500px;"><h2 style="text-align:center">${title}</h2><p>${desc}</p>${imgStr}</div>`
+        const textImgStr = `<div style="width:500px;"><h2 style="text-align:center">${title}</h2><p>${desc[descKey]}</p>${imgStr}</div>`
         return imgStr ? textImgStr : popupStr
       },
       popupOptions: { maxWidth: width + 100, maxHeight: height + 40 },
