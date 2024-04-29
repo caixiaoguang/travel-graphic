@@ -196,7 +196,7 @@ async function createGraphicLayer(layer) {
       popup: (e) => {
         const title = e.graphic.attr[layer.field]
         const descKey = e.graphic.attr['DESCR']
-        const desc = layerList.value.find((el) => el.fileName === layer.fileName).description
+        const desc = layerList.value.find((el) => el.fileName === layer.fileName)?.description ?? {}
         const imgNameList = e.graphic.attr['IMG']?.split(',') || []
         let imgStr = ''
         imgNameList.forEach((el) => {

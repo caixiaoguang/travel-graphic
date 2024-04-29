@@ -24,6 +24,24 @@
       "label": "水系",
       "field": "MC",
       "opacity": "0.9"
+    },
+    {
+      "fileName": "赤水河流域",
+      "label": "赤水河流域",
+      "field": "name",
+      "opacity": "0.9"
+    },
+    {
+      "fileName": "赤水河湿地重点研究区",
+      "label": "赤水河湿地重点研究区",
+      "field": "name",
+      "opacity": "0.9"
+    },
+    {
+      "fileName": "长江珍稀特有鱼类保护区_贵州",
+      "label": "长江珍稀特有鱼类保护区",
+      "field": "name",
+      "opacity": "0.9"
     }
   ],
   "3dtiles": [

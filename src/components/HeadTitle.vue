@@ -22,7 +22,7 @@
         <span class="text">基础图层</span>
       </div>
     </div>
-    <div class="title">三维虚拟可视化系统</div>
+    <div class="title">贵州省湿地管理系统</div>
     <div class="menu right">
       <div :class="['diamond-btn', { active: activeTab === item.index }]" v-for="item in rightMenu" :key="item.title" @click="handleClick(item)">
         <el-icon>
